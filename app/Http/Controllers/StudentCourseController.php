@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BadgeSetting;
 use App\Models\Content;
 use App\Models\Course;
+use App\Models\EssayQuestion;
 use App\Models\Question;
 use App\Models\StudentCourse;
 use App\Models\User;
@@ -16,6 +17,7 @@ use App\Models\ExplainingScore;
 use App\Models\TotalScore;
 use App\Models\Explains;
 use App\Models\ExerciseCodeLog;
+use App\Models\UserAnswer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -111,8 +113,9 @@ $fullbadge = BadgeSetting::all();
         $course = Course::find($course_id);
         $level = Level::find($level_id);
         $contents = $content_id != null ? Content::find($content_id) : $level->lessons[0]->contents->first();
-        $user_score = UserScore::where(["content_id" => $content_id == null ? $contents->id : $content_id, "user_id" => Auth::id()])->first();
-        
+        // $user_score = UserScore::where(["content_id" => $content_id == null ? $contents->id : $content_id, "user_id" => Auth::id()])->first();
+        $user_score = TotalScore::where(["content_id" => $content_id == null ? $contents->id : $content_id, "user_id" => Auth::id()])->first();
+
         $wondering = WonderingScore::where(["user_id" => Auth::id()])->sum("score");
         $exploring = UserScore::where("user_id", Auth::id())->sum("score");
         $explainKonteks = ExplainingScore::where("user_id",Auth::id())->sum("konteks_penjelasan");
@@ -201,11 +204,23 @@ $fullbadge = BadgeSetting::all();
     }
 
     public function detailReport($question_id){
+        $user_id = Auth::id();
         $question = Question::find($question_id);
-        $score = UserScore::where("user_id", Auth::id())->where("question_id", $question_id)->first();
+        // $score = UserScore::where("user_id", Auth::id())->where("question_id", $question_id)->first();
+        $score = TotalScore::where("user_id", Auth::id())->where("question_id", $question_id)->first();
+        $wondering = WonderingScore::where(["user_id" => Auth::id()])->sum("score");
+        $exploring = UserScore::where("user_id", Auth::id())->sum("score");
+        $explainKonteks = ExplainingScore::where("user_id",Auth::id())->sum("konteks_penjelasan");
+        $explainBenar = ExplainingScore::where("user_id", Auth::id())->sum("kebenaran");
+        $explainKeruntutan = ExplainingScore::where("user_id", Auth::id())->sum("keruntutan");
+        $final_score = $wondering + $exploring +  $explainKonteks + $explainBenar + $explainKeruntutan;
         $exercise_logs = ExerciseCodeLog::where("user_id", Auth::id())->where("question_id", $question_id)->orderBy('id','DESC')->get();
 
-        return view("student_courses.detail_report", compact('exercise_logs', 'score', 'question'));
+        $essay = EssayQuestion::where('question_id', $question_id)->pluck('id');
+        $explain = UserAnswer::whereIn('essay_question_id', $essay)->where('user_id', $user_id)->get();
+        $title = "code";
+
+        return view("student_courses.detail_report", compact('exercise_logs', 'score', 'question', 'explain', 'title', 'final_score'));
 
     }
 
