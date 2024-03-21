@@ -59,6 +59,7 @@ return [
     'asset_url' => env('ASSET_URL'),
 
     'python_api' => env('BASE_URL', 'http://127.0.0.1:8000/compiler/run'),
+    'generate_grade_api' => env('GENERATE_GRADE', 'http://127.0.0.1:8000/compiler/generate/grade'),
 
     /*
     |--------------------------------------------------------------------------
