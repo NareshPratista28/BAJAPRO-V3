@@ -56,6 +56,11 @@
                         </span>
                         </div>
                     </div>
+                    <br>
+                    <div>
+                        {!! $question->question !!}
+                    </div>
+                    <br>
                     @foreach($answer as $index => $answers)
                         @if($index == 0)
                             <div class="row mt-2">
@@ -89,23 +94,23 @@
                                 @if($explain_score->isNotEmpty())
                                         <div class="col-md-7">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="exampleRadio1" id="konteks1" value="1" {{$konteks == '1' ? 'checked' : ''}}>
+                                                <input class="form-check-input" type="radio" name="exampleRadio1" id="konteks1" value="1" {{$konteks == '1' ? 'checked' : ''}} disabled>
                                                 <label class="form-check-label" for="radioOption1">1</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="exampleRadio1" id="konteks2" value="2" {{$konteks == '2' ? 'checked' : ''}}>
+                                                <input class="form-check-input" type="radio" name="exampleRadio1" id="konteks2" value="2" {{$konteks == '2' ? 'checked' : ''}} disabled>
                                                 <label class="form-check-label" for="radioOption2">2</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="exampleRadio1" id="konteks3" value="3" {{$konteks == '3' ? 'checked' : ''}}>
+                                                <input class="form-check-input" type="radio" name="exampleRadio1" id="konteks3" value="3" {{$konteks == '3' ? 'checked' : ''}} disabled>
                                                 <label class="form-check-label" for="radioOption3">3</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="exampleRadio1" id="konteks4" value="4" {{$konteks == '4' ? 'checked' : ''}}>
+                                                <input class="form-check-input" type="radio" name="exampleRadio1" id="konteks4" value="4" {{$konteks == '4' ? 'checked' : ''}} disabled>
                                                 <label class="form-check-label" for="radioOption2">4</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="exampleRadio1" id="konteks5" value="5" {{$konteks == '5' ? 'checked' : ''}}>
+                                                <input class="form-check-input" type="radio" name="exampleRadio1" id="konteks5" value="5" {{$konteks == '5' ? 'checked' : ''}} disabled>
                                                 <label class="form-check-label" for="radioOption3">5</label>
                                             </div>
                                         </div>
@@ -168,23 +173,23 @@
                                     <input type="hidden" name="id_runtut" value="{{$id_runtut}}">
                                     <div class="col-md-7">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="exampleRadio2" id="keruntutan1" value="1" {{$runtut == '1' ? 'checked' : ''}}>
+                                            <input class="form-check-input" type="radio" name="exampleRadio2" id="keruntutan1" value="1" {{$runtut == '1' ? 'checked' : ''}} disabled>
                                             <label class="form-check-label" for="radioOption1">1</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="exampleRadio2" id="keruntutan2" value="2" {{$runtut == '2' ? 'checked' : ''}}>
+                                            <input class="form-check-input" type="radio" name="exampleRadio2" id="keruntutan2" value="2" {{$runtut == '2' ? 'checked' : ''}} disabled>
                                             <label class="form-check-label" for="radioOption2">2</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="exampleRadio2" id="keruntutan3" value="3" {{$runtut == '3' ? 'checked' : ''}}>
+                                            <input class="form-check-input" type="radio" name="exampleRadio2" id="keruntutan3" value="3" {{$runtut == '3' ? 'checked' : ''}} disabled>
                                             <label class="form-check-label" for="radioOption3">3</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="exampleRadio2" id="keruntutan4" value="4" {{$runtut == '4' ? 'checked' : ''}}>
+                                            <input class="form-check-input" type="radio" name="exampleRadio2" id="keruntutan4" value="4" {{$runtut == '4' ? 'checked' : ''}} disabled>
                                             <label class="form-check-label" for="radioOption2">4</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="exampleRadio2" id="keruntutan5" value="5" {{$runtut == '5' ? 'checked' : ''}}>
+                                            <input class="form-check-input" type="radio" name="exampleRadio2" id="keruntutan5" value="5" {{$runtut == '5' ? 'checked' : ''}} disabled>
                                             <label class="form-check-label" for="radioOption3">5</label>
                                         </div>
                                     </div>
@@ -253,23 +258,23 @@
                             @if($explain_score->isNotEmpty())
                                 <div class="col-md-7">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="exampleRadio3" id="kebenaran1" value="1" {{$benar == '1' ? 'checked' : ''}}>
+                                        <input class="form-check-input" type="radio" name="exampleRadio3" id="kebenaran1" value="1" {{$benar == '1' ? 'checked' : ''}} disabled>
                                         <label class="form-check-label" for="radioOption1">1</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="exampleRadio3" id="kebenaran2" value="2" {{$benar == '2' ? 'checked' : ''}}>
+                                        <input class="form-check-input" type="radio" name="exampleRadio3" id="kebenaran2" value="2" {{$benar == '2' ? 'checked' : ''}} disabled>
                                         <label class="form-check-label" for="radioOption2">2</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="exampleRadio3" id="kebenaran3" value="3" {{$benar == '3' ? 'checked' : ''}}>
+                                        <input class="form-check-input" type="radio" name="exampleRadio3" id="kebenaran3" value="3" {{$benar == '3' ? 'checked' : ''}} disabled>
                                         <label class="form-check-label" for="radioOption3">3</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="exampleRadio3" id="kebenaran4" value="4" {{$benar == '4' ? 'checked' : ''}}>
+                                        <input class="form-check-input" type="radio" name="exampleRadio3" id="kebenaran4" value="4" {{$benar == '4' ? 'checked' : ''}} disabled>
                                         <label class="form-check-label" for="radioOption2">4</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="exampleRadio3" id="kebenaran5" value="5" {{$benar == '5' ? 'checked' : ''}}>
+                                        <input class="form-check-input" type="radio" name="exampleRadio3" id="kebenaran5" value="5" {{$benar == '5' ? 'checked' : ''}} disabled>
                                         <label class="form-check-label" for="radioOption3">5</label>
                                     </div>
                                 </div>
@@ -346,10 +351,10 @@
                             </b></span>
                         </div>
                     </div>
-                    <div class="row mt-4 col-sm-12 d-flex justify-content-center">
+                    {{-- <div class="row mt-4 col-sm-12 d-flex justify-content-center">
                         <button type="submit" id="submitButton" class="btn btn-primary">Save</button>
                         <a href="{{ url()->previous() }}" class="btn btn-light">Cancel</a>
-                    </div>
+                    </div> --}}
                 </div>
             </form>
         </div>
