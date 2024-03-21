@@ -21,7 +21,7 @@
             </a>
             <ul class="dropdown-menu">
               <li class="nav-item">
-                <a class="nav-link" href="">Total Score: <b>{{ \App\Models\UserScore::getScore() }}</b></a>
+                <a class="nav-link" href="">Total Score: <b>{{ $final_score }}</b></a>
               </li>
               <li>
                 <hr class="dropdown-divider" />
