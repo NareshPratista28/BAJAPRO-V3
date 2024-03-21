@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Response;
 
 class QuestionController extends AppBaseController
@@ -51,7 +52,7 @@ class QuestionController extends AppBaseController
     {
         $title = "create";
         $contents = Content::all()->pluck("title", "id");
-        return view('admin.questions.create', ["contents" => $contents, "answers"=>[], "title" => $title]);
+        return view('admin.questions.create', ["contents" => $contents, "answers" => [], "title" => $title]);
     }
 
     /**
@@ -65,13 +66,14 @@ class QuestionController extends AppBaseController
     {
         $input = $request->all();
         $question = $this->questionRepository->create($input);
-        if($request['is_essay']!='1'){
-            for($i=0; $i<4; $i++){
+        if ($request['is_essay'] != '1') {
+            for ($i = 0; $i < 4; $i++) {
                 $ans = $request["answers_$i"];
                 $is_r = @$request["is_right_$i"];
-                Answer::create(["question_id"=>$question->id, "answer"=>$ans, "is_right" => $is_r]);
+                Answer::create(["question_id" => $question->id, "answer" => $ans, "is_right" => $is_r]);
             }
         }
+
 
         $essay_question = $request->input('essay_question');
         $key_answer = $request->input('answer_key');
@@ -87,6 +89,7 @@ class QuestionController extends AppBaseController
             ]);
         }
 
+       
         Flash::success('Question saved successfully.');
 
         return redirect(route('admin.questions.index'));
@@ -156,7 +159,7 @@ class QuestionController extends AppBaseController
         $question = $this->questionRepository->update($request->all(), $id);
 
         $answers = $question->answers;
-        if($request['is_essay']!='1') {
+        if ($request['is_essay'] != '1') {
             if ($answers->count() == 0) {
                 for ($i = 0; $i < 4; $i++) {
                     $ans = $request["answers_$i"];
@@ -185,22 +188,22 @@ class QuestionController extends AppBaseController
         $key_answer = $request->input('answer_key');
         $essay_id = $request->input('essay_id');
 
-        foreach($essay_question as $index => $eques){
+        foreach ($essay_question as $index => $eques) {
             $keys = $key_answer[$index];
             $essay = $essay_id[$index];
 
-            $check_data = EssayQuestion::where('id',$essay);
-            if($check_data->count() == 0){
+            $check_data = EssayQuestion::where('id', $essay);
+            if ($check_data->count() == 0) {
                 EssayQuestion::create([
                     'question_id'   => $question->id,
                     'user_id'       => Auth::id(),
                     'question'      => $eques,
                     'answer'        => $keys
                 ]);
-            } else{
+            } else {
                 $data_essay = EssayQuestion::firstwhere('id', $essay);
-                $data_essay-> question = $eques;
-                $data_essay-> answer = $keys;
+                $data_essay->question = $eques;
+                $data_essay->answer = $keys;
                 $data_essay->save();
             }
         }
