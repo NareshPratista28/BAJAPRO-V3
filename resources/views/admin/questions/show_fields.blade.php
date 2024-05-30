@@ -30,8 +30,26 @@
 
     <!-- Key answer Field -->
     <div class="form-group">
-        {!! Form::label('key_answer', 'Key Answer:') !!}
+        {!! Form::label('key_answer', 'Key Answer 1:') !!}
         <p>{{ $essay->answer }}</p>
+    </div>
+
+       <!-- Key answer Field -->
+       <div class="form-group">
+        {!! Form::label('key_answer2', 'Key Answer 2:') !!}
+        <p>{{ $essay->answer2 }}</p>
+    </div>
+
+       <!-- Key answer Field -->
+       <div class="form-group">
+        {!! Form::label('key_answer3', 'Key Answer 3:') !!}
+        <p>{{ $essay->answer3 }}</p>
+    </div>
+
+       <!-- Key answer Field -->
+       <div class="form-group">
+        {!! Form::label('key_answer4', 'Key Answer 4:') !!}
+        <p>{{ $essay->answer4 }}</p>
     </div>
 @endforeach
 <!-- Image Field -->

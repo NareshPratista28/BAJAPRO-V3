@@ -100,16 +100,19 @@ class CodeTestController extends Controller
                 foreach ($pertanyaanId as $key => $id_essay) {
                     $answer = $jawaban[$key]; // user answere
                     $essayAnswer = EssayQuestion::find($id_essay)->answer;
+                    $essayAnswer2 = EssayQuestion::find($id_essay)->answer2;
+                    $essayAnswer3 = EssayQuestion::find($id_essay)->answer3;
+                    $essayAnswer4 = EssayQuestion::find($id_essay)->answer4;
                     $check_data = UserAnswer::where('user_id', Auth::id())->where('essay_question_id', $id_essay);
-                    if($check_data->count() == 0){
+                    if ($check_data->count() == 0) {
                         UserAnswer::create([
                             'user_id'   => Auth::id(),
-                            'essay_question_id'=> $id_essay,
+                            'essay_question_id' => $id_essay,
                             'answer'    => $answer
                         ]);
                     } else {
                         $check_rubrik = ExplainingScore::where('user_id', Auth::id())->where('user_answer_id', $check_data->first()->id)->count();
-                        if ($check_rubrik == 0){
+                        if ($check_rubrik == 0) {
                             $data_explain = UserAnswer::firstwhere('id', $check_data->first()->id);
                             $data_explain->answer = $answer;
                             $data_explain->save();
@@ -118,8 +121,11 @@ class CodeTestController extends Controller
 
                     try {
                         $response = Http::asForm()->post(env("GENERATE_GRADE_URL", "http://127.0.0.1:8000/compiler/generate/grade"), [
-                            'esay_answer' => $answer,
-                            'user_answer' => $essayAnswer
+                            'esay_answer' => $essayAnswer,
+                            'esay_answer2' => $essayAnswer2,
+                            'esay_answer3' => $essayAnswer3,
+                            'esay_answer4' => $essayAnswer4,
+                            'user_answer' => $answer,
                         ]);
                         $data = $response->json(); // $data['output'] | 0 - 1
                         $nilai[] = $this->convertNilai($data['output']);
@@ -136,27 +142,27 @@ class CodeTestController extends Controller
                 $user_score = UserScore::where('content_id', $request->content_id)->where('user_id', $request->user_id)->where('question_id', $request->question_id)->first();
 
                 $tot_score = $wondering->score + $user_score->score + $nilai[0] + $nilai[1] + $nilai[2];
-                if($check_explain->count() == 0){
+                if ($check_explain->count() == 0) {
                     $total_score = TotalScore::create([
                         'content_id'        => $request->content_id,
                         'user_id'           => $request->user_id,
                         'question_id'       => $request->question_id,
                         'score'             => $tot_score,
-                        'wondering_score_id'=> $wondering->id,
+                        'wondering_score_id' => $wondering->id,
                         'user_score_id'     => $user_score->id
                     ]);
-        
+
                     $konteksAnswer = UserAnswer::where('user_id', $request->user_id)->where('essay_question_id', $request->essay_id[0])->first();
                     $explainKonteks = ExplainingScore::create([
                         'total_score_id'    => $total_score->id,
                         'content_id'        => $request->content_id,
                         'user_id'           => $request->user_id,
                         'question_id'       => $request->question_id,
-                        'konteks_penjelasan'=> $nilai[0],
+                        'konteks_penjelasan' => $nilai[0],
                         'essay_question_id' => $request->essay_id[0],
                         'user_answer_id'    => $konteksAnswer->id
                     ]);
-            
+
                     $runtutAnswer = UserAnswer::where('user_id', $request->user_id)->where('essay_question_id', $request->essay_id[1])->first();
                     $explainRuntut = ExplainingScore::create([
                         'total_score_id'    => $total_score->id,
@@ -167,7 +173,7 @@ class CodeTestController extends Controller
                         'essay_question_id' => $request->essay_id[1],
                         'user_answer_id'    => $runtutAnswer->id
                     ]);
-            
+
                     $benarAnswer = UserAnswer::where('user_id', $request->user_id)->where('essay_question_id', $request->essay_id[2])->first();
                     $explainBenar = ExplainingScore::create([
                         'total_score_id'    => $total_score->id,
@@ -178,23 +184,23 @@ class CodeTestController extends Controller
                         'essay_question_id' => $request->essay_id[2],
                         'user_answer_id'    => $benarAnswer->id
                     ]);
-                } else{
+                } else {
                     $check_total = $check_explain->first()->total->id;
 
                     $check_explain = ExplainingScore::where('content_id', $request->content_id)->where('question_id', $request->question_id)->where('user_id', $request->user_id);
-    
+
                     $total_score = TotalScore::firstwhere('id', $check_total);
                     $total_score->score = $tot_score;
                     $total_score->save();
-    
+
                     $konteks = ExplainingScore::firstwhere('id', $check_explain->get()[0]->id);
                     $konteks->konteks_penjelasan = $nilai[0];
                     $konteks->save();
-    
+
                     $runtut = ExplainingScore::firstwhere('id', $check_explain->get()[1]->id);
                     $runtut->keruntutan = $nilai[1];
                     $runtut->save();
-    
+
                     $benar = ExplainingScore::firstwhere('id', $check_explain->get()[2]->id);
                     $benar->kebenaran = $nilai[2];
                     $benar->save();
@@ -221,16 +227,17 @@ class CodeTestController extends Controller
         }
     }
 
-    private function convertNilai($value){
-        if($value > 0 && $value <= 0.2){
+    private function convertNilai($value)
+    {
+        if ($value > 0 && $value <= 0.2) {
             return 3;
-        } else if($value > 0.2 && $value <= 0.4){
+        } else if ($value > 0.2 && $value <= 0.4) {
             return 5;
-        } else if($value > 0.4 && $value <= 0.6){
+        } else if ($value > 0.4 && $value <= 0.6) {
             return 10;
-        } else if($value > 0.6 && $value <= 0.8){
+        } else if ($value > 0.6 && $value <= 0.8) {
             return 15;
-        } else if($value > 0.8 && $value <= 1.0){
+        } else if ($value > 0.8 && $value <= 1.0) {
             return 20;
         }
     }

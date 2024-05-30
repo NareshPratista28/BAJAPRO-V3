@@ -16,7 +16,10 @@ class EssayQuestion extends Model
         'question_id',
         'user_id',
         'question',
-        'answer'
+        'answer',
+        'answer2',
+        'answer3',
+        'answer4',
     ];
 
     public function questions()

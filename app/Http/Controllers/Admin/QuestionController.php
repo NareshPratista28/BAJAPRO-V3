@@ -77,19 +77,33 @@ class QuestionController extends AppBaseController
 
         $essay_question = $request->input('essay_question');
         $key_answer = $request->input('answer_key');
+        $key_answer2 = $request->input('answer_key2');
+        $key_answer3 = $request->input('answer_key3');
+        $key_answer4 = $request->input('answer_key4');
 
-        foreach($essay_question as $index => $eques){
+        foreach ($essay_question as $index => $eques) {
             $keys = $key_answer[$index];
+            $keys2 = $key_answer2[$index];
+            $keys3 = $key_answer3[$index];
+            $keys4 = $key_answer4[$index];
+
+            // $keys = isset($key_answer[$index]) ? $key_answer[$index] : null;
+            // $keys2 = isset($key_answer2[$index]) ? $key_answer2[$index] : null;
+            // $keys3 = isset($key_answer3[$index]) ? $key_answer3[$index] : null;
+            // $keys4 = isset($key_answer4[$index]) ? $key_answer4[$index] : null;
 
             EssayQuestion::create([
                 'question_id'   => $question->id,
                 'user_id'       => Auth::id(),
                 'question'      => $eques,
-                'answer'        => $keys
+                'answer'        => $keys,
+                'answer2'        => $keys2,
+                'answer3'        => $keys3,
+                'answer4'        => $keys4
             ]);
         }
 
-       
+
         Flash::success('Question saved successfully.');
 
         return redirect(route('admin.questions.index'));
@@ -186,10 +200,16 @@ class QuestionController extends AppBaseController
 
         $essay_question = $request->input('essay_question');
         $key_answer = $request->input('answer_key');
+        $key_answer2 = $request->input('answer_key2');
+        $key_answer3 = $request->input('answer_key3');
+        $key_answer4 = $request->input('answer_key4');
         $essay_id = $request->input('essay_id');
 
         foreach ($essay_question as $index => $eques) {
             $keys = $key_answer[$index];
+            $keys2 = $key_answer2[$index];
+            $keys3 = $key_answer3[$index];
+            $keys4 = $key_answer4[$index];
             $essay = $essay_id[$index];
 
             $check_data = EssayQuestion::where('id', $essay);
@@ -198,12 +218,18 @@ class QuestionController extends AppBaseController
                     'question_id'   => $question->id,
                     'user_id'       => Auth::id(),
                     'question'      => $eques,
-                    'answer'        => $keys
+                    'answer'        => $keys,
+                    'answer2'        => $keys2,
+                    'answer3'        => $keys3,
+                    'answer4'        => $keys4
                 ]);
             } else {
                 $data_essay = EssayQuestion::firstwhere('id', $essay);
                 $data_essay->question = $eques;
                 $data_essay->answer = $keys;
+                $data_essay->answer2 = $keys2;
+                $data_essay->answer3 = $keys3;
+                $data_essay->answer4 = $keys4;
                 $data_essay->save();
             }
         }

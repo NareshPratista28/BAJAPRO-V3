@@ -66,8 +66,14 @@
           <div class="col-sm-10">
             <label for="essay_question1">Essay Question :</label>
             <textarea type="text" name="essay_question[]" class="form-control" style="height: 200px;" value="{{$data->question}}">{{$data->question}}</textarea>
-            <label for="answer_key1">Answer Key :</label>
+            <label for="answer_key1">Answer Key 1:</label>
             <textarea type="text" name="answer_key[]" value="{{$data->answer}}" style="height: 200px;" class="form-control">{{$data->answer}}</textarea>
+            <label for="answer_key2">Answer Key 2:</label>
+            <textarea type="text" name="answer_key2[]" value="{{$data->answer2}}" style="height: 200px;" class="form-control">{{$data->answer2}}</textarea>
+            <label for="answer_key3">Answer Key 3:</label>
+            <textarea type="text" name="answer_key3[]" value="{{$data->answer3}}" style="height: 200px;" class="form-control">{{$data->answer3}}</textarea>
+            <label for="answer_key4">Answer Key 4:</label>
+            <textarea type="text" name="answer_key4[]" value="{{$data->answer4}}" style="height: 200px;" class="form-control">{{$data->answer4}}</textarea>
             <input type="hidden" value="{{$data->id}}" name="essay_id[]">
           </div>
           <div class="col-sm-2 pt-3">
@@ -82,8 +88,14 @@
         <div class="col-sm-10">
           <label for="essay_question1">Essay Question :</label>
           <textarea type="text" name="essay_question[]" style="height: 200px;" class="form-control"></textarea>
-          <label for="answer_key1">Answer Key :</label>
+          <label for="answer_key1">Answer Key 1:</label>
           <textarea type="text" name="answer_key[]" style="height: 200px;" class="form-control"></textarea>
+          <label for="answer_key2">Answer Key 2:</label>
+          <textarea type="text" name="answer_key2[]" style="height: 200px;" class="form-control"></textarea>
+          <label for="answer_key3">Answer Key 3:</label>
+          <textarea type="text" name="answer_key3[]" style="height: 200px;" class="form-control"></textarea>
+          <label for="answer_key4">Answer Key 4:</label>
+          <textarea type="text" name="answer_key4[]" style="height: 200px;" class="form-control"></textarea>
           <input type="hidden" value="0" name="essay_id[]">
         </div>
         <div class="col-sm-2 pt-3">
@@ -167,8 +179,14 @@
                   '<div class="col-sm-10">' +
                   '<label for="essay_question' + counter + '">Essay Question  :</label>' +
                   '<textarea type="text" name="essay_question[]" style="height: 200px;" class="form-control"></textarea>' +
-                  '<label for="answer_key' + counter + '">Answer Key :</label>' +
+                  '<label for="answer_key1' + counter + '">Answer Key 1:</label>' +
                   '<textarea type="text" name="answer_key[]" style="height: 200px;" class="form-control"></textarea>' +
+                  '<label for="answer_key2' + counter + '">Answer Key 2:</label>' +
+                  '<textarea type="text" name="answer_key2[]" style="height: 200px;" class="form-control"></textarea>' +
+                  '<label for="answer_key3' + counter + '">Answer Key 3:</label>' +
+                  '<textarea type="text" name="answer_key3[]" style="height: 200px;" class="form-control"></textarea>' +
+                  '<label for="answer_key4' + counter + '">Answer Key 4:</label>' +
+                  '<textarea type="text" name="answer_key4[]" style="height: 200px;" class="form-control"></textarea>' +
                   '<input type="hidden" value="0" name="essay_id[]">'+
                   '</div>' +
                   '<div class="col-sm-2 pt-3">' +

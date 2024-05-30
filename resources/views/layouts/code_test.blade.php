@@ -16,9 +16,9 @@
   <link href="{{ asset('assets/stisla/css/components.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/quill.snow.css') }}" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.8/sweetalert2.min.css">
     <link href="{{ asset('css/prism.css') }}" rel="stylesheet" type="text/css"/>
     <script src="https://www.jdoodle.com/assets/jdoodle-pym.min.js" type="text/javascript"></script>
-
   <title>Gamification</title>
 </head>
 
@@ -42,8 +42,10 @@
 <script src="{{ asset('assets/js/jquery.nicescroll.js') }}"></script>
 <script src="{{ asset('assets/stisla/js/stisla.js') }}"></script>
 <script src="{{ mix('js/app.js') }}"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+{{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.8/sweetalert2.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
 @yield("scripts")
