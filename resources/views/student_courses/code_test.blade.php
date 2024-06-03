@@ -233,6 +233,7 @@
             function runCode() {
                 console.log("running");
                 //let codes = ($('#'+id).text());
+
                 let to_compile = {
                     "code": $(".codeflask__textarea").val(),
                     "user": '{{ \Illuminate\Support\Facades\Auth::user()->email }}',
@@ -256,7 +257,8 @@
                         // submitCode();
                     }
                 }).fail(function(data, err) {
-                    alert("fail " + JSON.stringify(data) + " " + JSON.stringify(err));
+                    // alert("fail " + JSON.stringify(data) + " " + JSON.stringify(err));
+                    alert("Silahkan Isi Kode Dengan Benar!");
                 });
             }
 
@@ -339,7 +341,8 @@
                 // var quill = "quillEditors" + essay_id;
                 // var answer = quill.root.innerHTML;
                 // $('#jawaban'+essay_id).val(content);
-                var route = "{{ route('student_course.my_course.detail.content', [':course_id', ':level_id', ':content_id']) }}";
+                var route =
+                    "{{ route('student_course.my_course.detail.content', [':course_id', ':level_id', ':content_id']) }}";
                 route = route.replace(':course_id', course_id);
                 route = route.replace(':content_id', content_id);
                 route = route.replace(':level_id', level_id);
