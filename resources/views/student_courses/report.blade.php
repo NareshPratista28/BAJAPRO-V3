@@ -121,7 +121,7 @@
 
                 <div class="col-md-2">
                   <span class="badge badge-info mt-2">
-                    Question Score: {{ $explain }}
+                    Essay Score: {{ $explain }}
                   </span>
                 </div>
 

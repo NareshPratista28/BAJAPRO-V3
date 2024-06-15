@@ -29,8 +29,10 @@
                                     class="text-danger">*</span>
                         <select class="custom-select" id="inputGroupSelect01" name="class">
                             <option selected>Choose class</option>
-                            <option value="1">MI PSDKU PAMEKASAN</option>
-                            <option value="2">SIB POLINEMA PUSAT</option>
+                            <option value="1">D4 Teknik Informatika</option>
+                            <option value="2">D4 Sistem Informasi Bisnis</option>
+                            <option value="3">SMKN 6 Malang</option>
+                            <option value="4">Lainnya</option>
                         </select>
                         <div class="invalid-feedback">
                                 {{ $errors->first('class') }}

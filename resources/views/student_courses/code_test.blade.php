@@ -22,6 +22,24 @@
             color: #1f1f1f;
             overflow: visible;
         }
+
+        .spinner-logo {
+            width: 50px;
+            /* Adjust the size as needed */
+            height: 50px;
+            /* Adjust the size as needed */
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
     <div style="margin-top: 70px">
         <div class="row">
@@ -163,6 +181,10 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" onclick="submitCode()">Submit Pekerjaan</button>
+                    </div>
+                    <div id="loadingIndicator" style="display:none; text-align: center; padding: 10px;">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjAiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1kYXNoYXJyYXk9IjEwLjU1IDEwLjU1Ij48L2NpcmNsZT48L3N2Zz4=" alt="Loading..." class="spinner-logo">
+                        <br>Please wait...
                     </div>
                 </div>
             </div>
@@ -349,7 +371,12 @@
                 // var start_time = localStorage.getItem("start_time");
                 // var end_time = moment().format("YYYY-MM-DD HH:mm:ss");
 
-                debugger;
+                // debugger;
+
+                // Show the loading indicator and disable the submit button
+                $("#loadingIndicator").show();
+                $("#submitBtn").prop("disabled", true).text("Submitting...");
+
                 $.ajax({
                     url: "{{ route('code_test.submit', [$question->id]) }}",
                     method: "post",
@@ -371,6 +398,9 @@
                     error: function(response) {
 
                         debugger;
+                        // Hide the loading indicator and re-enable the submit button
+                        $("#loadingIndicator").show();
+                        $("#submitBtn").prop("disabled", false).text("Submit Pekerjaan");
                         Swal.fire(
                             'Error!',
                             'Error, Try Again!',
@@ -378,6 +408,9 @@
                         );
                     },
                     success: function(response) {
+                        // Hide the loading indicator and re-enable the submit button
+                        $("#loadingIndicator").show();
+                        $("#submitBtn").prop("disabled", false).text("Submit Pekerjaan");
                         if (response.status == 200 || response.status == 201) {
                             debugger;
                             Swal.fire(
