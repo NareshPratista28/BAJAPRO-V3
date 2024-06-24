@@ -42,24 +42,24 @@ class CodeTestController extends Controller
         if ($user_score) {
             $a = Carbon::parse($user_score->started_at);
             $b = Carbon::parse($user_score->ended_at);
-            $duration = $b->diff($a)->format('%Hh %Im %Ss');
+            $duration = $b->diff($a)->format('%Hh %Im %Ss'); // Menghitung durasi pengerjaan soal
         }
 
         $isFinish = false;
         if ($score->count() > 0) {
-            $isFinish = true;
+            $isFinish = true; // Menentukan apakah pengguna telah menyelesaikan soal
         }
 
         return view("student_courses.code_test", [
             "question" => $question,
-            'score' => $score->sum('score'),
-            'is_finish' => $isFinish,
+            'score' => $score->sum('score'), //Menghitung total skor
+            'is_finish' => $isFinish, // Menyatakan apakah pengguna telah menyelesaikan soal
             'user_score' => $user_score,
             'duration' => $duration,
-            'error_logs' => $err_logs,
-            'exercise_logs' => $exer_logs,
-            'explain'      => $explain,
-            'essay'        => $essay
+            'error_logs' => $err_logs, // Mengirimkan log kesalahan ke tampilan
+            'exercise_logs' => $exer_logs, // Mengirimkan log latihan ke tampilan
+            'explain'      => $explain,  // Mengirimkan penjelasan ke tampilan
+            'essay'        => $essay // Mengirimkan pertanyaan esai ke tampilan
         ]);
     }
 
@@ -67,12 +67,16 @@ class CodeTestController extends Controller
     {
         DB::beginTransaction();
         try {
+            // Mendapatkan model skor pengguna berdasarkan ID pengguna dan ID soal
             $model = UserScore::where("user_id", $request->get("user_id"))->where("question_id", $request->get("question_id"));
             $question = Question::find($request->get("question_id"));
             $check_explain = Explains::where("user_id", $request->get("user_id"))->where('question_id', $request->get("question_id"));
             Log::debug($model->count());
+
+            // Jika skor lebih dari 0, lakukan proses penyimpanan
             if ($request->score > 0) {
                 if ($model->count() == 0) {
+                    // Jika belum ada skor, buat entri baru
                     UserScore::create(
                         [
                             "user_id" => $request->get("user_id"),
@@ -86,6 +90,7 @@ class CodeTestController extends Controller
                         ]
                     );
                 } else {
+                    // Jika sudah ada skor, update entri yang ada
                     $check = UserScore::where("user_id", $request->get("user_id"))->where("question_id", $request->get("question_id"))->first();
                     $user_score = UserScore::firstwhere('id', $check->id);
                     // $user_score->score = $request->get('score');
@@ -93,6 +98,8 @@ class CodeTestController extends Controller
                     $user_score->save();
                 }
 
+                // Memproses jawaban esai
+                // Mengambil Input dari Pengguna:
                 $jawaban = $request->input('answer');
                 $pertanyaanId = $request->input('essay_id');
 
@@ -104,6 +111,8 @@ class CodeTestController extends Controller
                     $essayAnswer3 = EssayQuestion::find($id_essay)->answer3;
                     $essayAnswer4 = EssayQuestion::find($id_essay)->answer4;
                     $check_data = UserAnswer::where('user_id', Auth::id())->where('essay_question_id', $id_essay);
+
+                    // Menyimpan atau memperbarui jawaban pengguna
                     if ($check_data->count() == 0) {
                         UserAnswer::create([
                             'user_id'   => Auth::id(),
@@ -119,6 +128,8 @@ class CodeTestController extends Controller
                         }
                     }
 
+
+                    // Memanggil API untuk mengoreksi jawaban esai
                     try {
                         $response = Http::asForm()->post(env("GENERATE_GRADE_URL", "http://127.0.0.1:8000/compiler/generate/grade"), [
                             'esay_answer' => $essayAnswer,
@@ -127,7 +138,7 @@ class CodeTestController extends Controller
                             'esay_answer4' => $essayAnswer4,
                             'user_answer' => $answer,
                         ]);
-                        $data = $response->json(); // $data['output'] | 0 - 1
+                        $data = $response->json(); // $data['output'] | 0 - 1 // Mengambil hasil koreksi
                         $nilai[] = $this->convertNilai($data['output']);
                     } catch (Exception $err) {
                         return response()->json([
@@ -137,12 +148,15 @@ class CodeTestController extends Controller
                     }
                 }
 
+                // Mengambil Skor Penjelasan, Wondering, dan Skor Pengguna:
                 $check_explain = ExplainingScore::where('content_id', $request->content_id)->where('question_id', $request->question_id)->where('user_id', $request->user_id);
                 $wondering = WonderingScore::where('content_id', $request->content_id)->where('user_id', $request->user_id)->first();
                 $user_score = UserScore::where('content_id', $request->content_id)->where('user_id', $request->user_id)->where('question_id', $request->question_id)->first();
-
+                //Menghitung Total Skor:
                 $tot_score = $wondering->score + $user_score->score + $nilai[0] + $nilai[1] + $nilai[2];
+
                 if ($check_explain->count() == 0) {
+                    // Membuat entri total skor dan skor penjelasan
                     $total_score = TotalScore::create([
                         'content_id'        => $request->content_id,
                         'user_id'           => $request->user_id,
@@ -184,6 +198,7 @@ class CodeTestController extends Controller
                         'essay_question_id' => $request->essay_id[2],
                         'user_answer_id'    => $benarAnswer->id
                     ]);
+
                 } else {
                     $check_total = $check_explain->first()->total->id;
 
