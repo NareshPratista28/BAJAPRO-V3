@@ -139,7 +139,8 @@ class CodeTestController extends Controller
                             'user_answer' => $answer,
                         ]);
                         $data = $response->json(); // $data['output'] | 0 - 1 // Mengambil hasil koreksi
-                        $nilai[] = $this->convertNilai($data['output']);
+                        // $nilai[] = $this->convertNilai($data['output']);
+                        $nilai[] =  $data['output'];
                     } catch (Exception $err) {
                         return response()->json([
                             'status'    => '500',
@@ -173,6 +174,7 @@ class CodeTestController extends Controller
                         'user_id'           => $request->user_id,
                         'question_id'       => $request->question_id,
                         'konteks_penjelasan' => $nilai[0],
+                        'is_accepted'       => false,
                         'essay_question_id' => $request->essay_id[0],
                         'user_answer_id'    => $konteksAnswer->id
                     ]);
@@ -184,8 +186,10 @@ class CodeTestController extends Controller
                         'user_id'           => $request->user_id,
                         'question_id'       => $request->question_id,
                         'keruntutan'        => $nilai[1],
+                        'is_accepted'       => false,
                         'essay_question_id' => $request->essay_id[1],
                         'user_answer_id'    => $runtutAnswer->id
+                        
                     ]);
 
                     $benarAnswer = UserAnswer::where('user_id', $request->user_id)->where('essay_question_id', $request->essay_id[2])->first();
@@ -195,6 +199,7 @@ class CodeTestController extends Controller
                         'user_id'           => $request->user_id,
                         'question_id'       => $request->question_id,
                         'kebenaran'         => $nilai[2],
+                        'is_accepted'       => false,
                         'essay_question_id' => $request->essay_id[2],
                         'user_answer_id'    => $benarAnswer->id
                     ]);

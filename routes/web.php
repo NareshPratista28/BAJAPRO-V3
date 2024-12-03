@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -54,12 +55,12 @@ Route::group(['middleware' => ["auth"]], function () {
     Route::get("/courses/code_test/{question_id}", [\App\Http\Controllers\CodeTestController::class, "index"])->name("code_test");
     Route::post("/courses/code_test/{question_id}/submit", [\App\Http\Controllers\CodeTestController::class, "codeTestSubmit"])->name("code_test.submit");
     Route::get("/courses/report", [\App\Http\Controllers\StudentCourseController::class, "report"])->name("student_course.report");
-    Route::get("/courses/level/{course_id}",[\App\Http\Controllers\StudentCourseController::class, "level"])->name("student_course.level");
-    Route::get("/courses/report/detail/{question_id}",[\App\Http\Controllers\StudentCourseController::class, "detailReport"])->name("student_course.report.detail");
-    Route::post("/courses/explain/{level_id}",[\App\Http\Controllers\ExplainingController::class, "create"])->name("student_course.explain");
+    Route::get("/courses/level/{course_id}", [\App\Http\Controllers\StudentCourseController::class, "level"])->name("student_course.level");
+    Route::get("/courses/report/detail/{question_id}", [\App\Http\Controllers\StudentCourseController::class, "detailReport"])->name("student_course.report.detail");
+    Route::post("/courses/explain/{level_id}", [\App\Http\Controllers\ExplainingController::class, "create"])->name("student_course.explain");
 
     //wondering
-    Route::post("/courses/read/score",[\App\Http\Controllers\StudentCourseController::class, "readScore"])->name("student_course.read.score");
+    Route::post("/courses/read/score", [\App\Http\Controllers\StudentCourseController::class, "readScore"])->name("student_course.read.score");
 
 
     Route::get("/explain", [\App\Http\Controllers\ExplainingController::class, "show"])->name("student_course.show.explain");
@@ -70,7 +71,7 @@ Route::group(['middleware' => ["auth"]], function () {
     Route::get("/explain/edit/{id}", [\App\Http\Controllers\ExplainingController::class, "edit"])->name('student_course.edit.explain');
     Route::get("/explain/code/edit/{id}", [\App\Http\Controllers\ExplainingController::class, "editCode"])->name('student_course.code.edit.explain');
     Route::put("/explain/update/{id}/{title}", [\App\Http\Controllers\ExplainingController::class, "update"])->name("student_course.update.explain");
-    Route::get("/table/explain",[\App\Http\Controllers\ExplainingController::class, "tableExplain"])->name("table.explain");
+    Route::get("/table/explain", [\App\Http\Controllers\ExplainingController::class, "tableExplain"])->name("table.explain");
 });
 
 Route::get('generator_builder', '\InfyOm\GeneratorBuilder\Controllers\GeneratorBuilderController@builder')->name('io_generator_builder');
@@ -87,5 +88,3 @@ Route::post(
     'generator_builder/generate-from-file',
     '\InfyOm\GeneratorBuilder\Controllers\GeneratorBuilderController@generateFromFile'
 )->name('io_generator_builder_generate_from_file');
-
-

@@ -64,23 +64,35 @@
                                 <tbody>
                                     @foreach ($explain as $data)
                                         @php
-                                            $check_rubrik = \App\Models\ExplainingScore::where(
-                                                'user_answer_id',
-                                                $data->id,
-                                            )->count();
-                                            $explaining = \App\Models\ExplainingScore::where(
-                                                'user_answer_id',
-                                                $data->id,
-                                            )->first();
+                                            // $check_rubrik = \App\Models\ExplainingScore::where(
+                                            //     'user_answer_id',
+                                            //     $data->id,
+                                            // )->count();
+                                            // $explaining = \App\Models\ExplainingScore::where(
+                                            //     'user_answer_id',
+                                            //     $data->id,
+                                            // )->first();
+                                            $explaining = \App\Models\ExplainingScore::where('user_id', $data->user->id)
+                                            ->where('question_id', $data->essay->questions->id)
+                                            ->where('content_id', $data->essay->questions->content->id)
+                                            ->where('is_accepted', true)
+                                            ->first();
                                         @endphp
                                         <tr class="spacer">
                                             <td>{!! $data->essay->question !!}
 
                                             </td>
                                             <td>{{ $data->answer }}</td>
-                                            @if ($check_rubrik > 0)
+                                            {{-- @if ($check_rubrik > 0)
                                                 <td>{{ $data->essay->answer }}</td>
-                                            @endif
+                                            @endif --}}
+                                            <td>
+                                                @if ($explaining)
+                                                    {{ $data->essay->answer }}
+                                                @else
+                                                    Not Available
+                                                @endif
+                                            </td>
                                             <td>
                                                 @if ($explaining?->konteks_penjelasan)
                                                     {{ $explaining?->konteks_penjelasan }}

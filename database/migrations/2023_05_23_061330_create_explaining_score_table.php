@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('konteks_penjelasan');
             $table->integer('keruntutan');
             $table->integer('kebenaran');
+            $table->boolean('is_accepted')->default(false);
             $table->unsignedBigInteger("essay_question_id");
             $table->foreign('essay_question_id')->references("id")->on("essay_question");
             $table->unsignedBigInteger("user_answer_id");

@@ -15,6 +15,7 @@ class ExplainingScore extends Model
         'konteks_penjelasan',
         'keruntutan',
         'kebenaran',
+        'is_accepted',
         'user_answer_id',
         'essay_question_id',
         'question_id',
