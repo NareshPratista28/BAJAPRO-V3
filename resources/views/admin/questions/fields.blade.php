@@ -22,34 +22,35 @@
   {!! Form::label('question', 'Code Question:') !!}
   {!! Form::hidden('question', null, ['class' => 'form-control', 'id' => 'res']) !!}
 
-  <div>
-    <div id="toolbar">
-      <!-- Add font size dropdown -->
-      <select class="ql-size">
-        <option value="small"></option>
-        <!-- Note a missing, thus falsy value, is used to reset to default -->
-        <option selected></option>
-        <option value="large"></option>
-        <option value="huge"></option>
-      </select>
-      <!-- Add a bold button -->
-      <button class="ql-bold"></button>
-      <button class="ql-italic"></button>
-      <button class="ql-list" value="ordered"></button>
-      <button class="ql-list" value="bullet"></button>
-
-      <!-- Add subscript and superscript buttons -->
-      <button class="ql-script" value="sub"></button>
-      <button class="ql-script" value="super"></button>
-      <button class="ql-image"></button>
-      <button class="ql-code-block"></button>
-
+  <div class="d-flex align-items-start">
+    <div class="flex-grow-1">
+      <div id="toolbar">
+        <!-- Toolbar buttons tetap sama -->
+        <select class="ql-size">
+          <option value="small"></option>
+          <option selected></option>
+          <option value="large"></option>
+          <option value="huge"></option>
+        </select>
+        <button class="ql-bold"></button>
+        <button class="ql-italic"></button>
+        <button class="ql-list" value="ordered"></button>
+        <button class="ql-list" value="bullet"></button>
+        <button class="ql-script" value="sub"></button>
+        <button class="ql-script" value="super"></button>
+        <button class="ql-image"></button>
+        <button class="ql-code-block"></button>
+      </div>
+      <div id="editor">
+        {!! @$question->question !!}
+      </div>
     </div>
-    <div id="editor">
-      {!! @$question->question !!}
+    <div class="ml-2">
+      <button id="generateQuestionButton" class="btn btn-success">
+        <i class="fas fa-magic mr-2"></i>Generate Question
+      </button>
     </div>
   </div>
-
 </div>
 
 <!-- Hint Field -->
