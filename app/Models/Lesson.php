@@ -15,7 +15,7 @@ use Eloquent as Model;
  * @property string $title
  * @property string $description
  * @property integer $course_id
- * @property integer $posisition
+ * @property integer $position
  * @property integer $published
  */
 class Lesson extends Model
@@ -30,9 +30,10 @@ class Lesson extends Model
     public $fillable = [
         'title',
         'description',
+        'prompt_llm',
         'course_id',
         'level_id',
-        'posisition',
+        'position',
         'published'
     ];
 
@@ -45,8 +46,9 @@ class Lesson extends Model
         'id' => 'integer',
         'title' => 'string',
         'description' => 'string',
+        'prompt_llm' => 'string',
         'course_id' => 'integer',
-        'posisition' => 'integer',
+        'position' => 'integer',
         'published' => 'integer',
         'level_id'  => 'integer'
     ];
@@ -66,11 +68,13 @@ class Lesson extends Model
         return $this->belongsTo(\App\Models\Course::class, 'course_id');
     }
 
-    public function contents(){
+    public function contents()
+    {
         return $this->hasMany(Content::class);
     }
 
-    public function level(){
+    public function level()
+    {
         return $this->belongsTo(\App\Models\Level::class, 'level_id');
     }
 }

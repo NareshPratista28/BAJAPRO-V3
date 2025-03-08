@@ -28,10 +28,10 @@
     <p>{{ $lesson->level_id }}</p>
 </div>
 
-<!-- Posisition Field -->
+<!-- Position Field -->
 <div class="form-group">
-    {!! Form::label('posisition', 'Posisition:') !!}
-    <p>{{ $lesson->posisition }}</p>
+    {!! Form::label('position', 'Position:') !!}
+    <p>{{ $lesson->position }}</p>
 </div>
 
 <!-- Published Field -->
@@ -51,4 +51,3 @@
     {!! Form::label('updated_at', 'Updated At:') !!}
     <p>{{ $lesson->updated_at }}</p>
 </div>
-

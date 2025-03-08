@@ -14,8 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('lessons', function (Blueprint $table) {
-            $table->integer('level_id')->unsigned();
-            $table->foreign('level_id')->references("id")->on("levels");
+            $table->longText('prompt_llm')->nullable()->after('description');
         });
     }
 
@@ -27,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('lessons', function (Blueprint $table) {
-            $table->dropColumn('level_id');
+            $table->dropColumn('prompt_llm');
         });
     }
 };

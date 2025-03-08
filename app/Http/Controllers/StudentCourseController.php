@@ -49,7 +49,7 @@ class StudentCourseController extends Controller
         $course = Course::find($course_id);
         $total_score = UserScore::where("user_id", Auth::id())->sum("score");
         $current_badge = BadgeSetting::all();
-$fullbadge = BadgeSetting::all();
+        $fullbadge = BadgeSetting::all();
         $getBadge = "(SELECT badge_settings.name FROM badge_settings WHERE badge_settings.min <= 'total_score' and badge_settings.max >= 'total_score' LIMIT 1)";
 
         $getBadgeFile = "(SELECT badge_settings.file FROM badge_settings WHERE badge_settings.min <= 'total_score' and badge_settings.max >= 'total_score' LIMIT 1)";
@@ -88,7 +88,7 @@ $fullbadge = BadgeSetting::all();
             if ($check_course->count() == 0) {
                 $student_course = StudentCourse::create(["user_id" => $user_id, "course_id" => $request["course_id"]]);
                 if ($student_course->save()) {
-                  session()->flash('msg_error1', 'You take it success');
+                    session()->flash('msg_error1', 'You take it success');
                     return redirect()->back();
                 }
             } else {
@@ -98,15 +98,15 @@ $fullbadge = BadgeSetting::all();
         }
     }
 
-    public function my_course($course_id , $level_id, $content_id = null)
+    public function my_course($course_id, $level_id, $content_id = null)
     {
-        if($content_id == 1){
+        if ($content_id == 1) {
             $check = WonderingScore::where('user_id', Auth::id())->where('content_id', $content_id);
-            if($check->count()==0){
+            if ($check->count() == 0) {
                 WonderingScore::create([
-                    'user_id'=>Auth::id(),
+                    'user_id' => Auth::id(),
                     'content_id' => $content_id,
-                    'score'=>10,
+                    'score' => 10,
                 ]);
             }
         }
@@ -118,7 +118,7 @@ $fullbadge = BadgeSetting::all();
 
         $wondering = WonderingScore::where(["user_id" => Auth::id()])->sum("score");
         $exploring = UserScore::where("user_id", Auth::id())->sum("score");
-        $explainKonteks = ExplainingScore::where("user_id",Auth::id())->sum("konteks_penjelasan");
+        $explainKonteks = ExplainingScore::where("user_id", Auth::id())->sum("konteks_penjelasan");
         $explainBenar = ExplainingScore::where("user_id", Auth::id())->sum("kebenaran");
         $explainKeruntutan = ExplainingScore::where("user_id", Auth::id())->sum("keruntutan");
         $final_score = $wondering + $exploring +  $explainKonteks + $explainBenar + $explainKeruntutan;
@@ -133,8 +133,8 @@ $fullbadge = BadgeSetting::all();
 
         $is_last = 0;
         $check_explain = 0;
-        if($content_id != null){
-            $last_lesson = Lesson::where('level_id', $level_id)->orderBy('posisition', 'Desc')->first();
+        if ($content_id != null) {
+            $last_lesson = Lesson::where('level_id', $level_id)->orderBy('position', 'Desc')->first();
             $content = Content::where('lesson_id', $last_lesson->id)->pluck('id')->toArray();
             $last_question = Question::whereIn('content_id', $content)->pluck('id')->toArray();
 
@@ -142,7 +142,7 @@ $fullbadge = BadgeSetting::all();
             $history_question = UserScore::where('user_id', Auth::id())->whereIn('content_id', $content)->pluck('question_id')->toArray();
             $check_explain = Explains::where("user_id", Auth::id())->where('level_id', $level_id)->where('code', 0)->count();
             $check_question = array_diff($last_question, $history_question);
-            if(empty($check_question) && $last_content == $content_id){
+            if (empty($check_question) && $last_content == $content_id) {
                 $is_last = 1;
             }
         }
@@ -184,7 +184,7 @@ $fullbadge = BadgeSetting::all();
         $code_test_score = UserScore::where(["user_id" => Auth::id()])->whereNotNull("question_id")->get();
         $wondering = WonderingScore::where(["user_id" => Auth::id()])->sum("score");
         $exploring = UserScore::where("user_id", Auth::id())->sum("score");
-        $explainKonteks = ExplainingScore::where("user_id",Auth::id())->sum("konteks_penjelasan");
+        $explainKonteks = ExplainingScore::where("user_id", Auth::id())->sum("konteks_penjelasan");
         $explainBenar = ExplainingScore::where("user_id", Auth::id())->sum("kebenaran");
         $explainKeruntutan = ExplainingScore::where("user_id", Auth::id())->sum("keruntutan");
         $final_score = $wondering + $exploring +  $explainKonteks + $explainBenar + $explainKeruntutan;
@@ -203,30 +203,31 @@ $fullbadge = BadgeSetting::all();
         ]);
     }
 
-    public function detailReport($question_id){
+    public function detailReport($question_id)
+    {
         $user_id = Auth::id();
         $question = Question::find($question_id);
         // $score = UserScore::where("user_id", Auth::id())->where("question_id", $question_id)->first();
         $score = TotalScore::where("user_id", Auth::id())->where("question_id", $question_id)->first();
         $wondering = WonderingScore::where(["user_id" => Auth::id()])->sum("score");
         $exploring = UserScore::where("user_id", Auth::id())->sum("score");
-        $explainKonteks = ExplainingScore::where("user_id",Auth::id())->sum("konteks_penjelasan");
+        $explainKonteks = ExplainingScore::where("user_id", Auth::id())->sum("konteks_penjelasan");
         $explainBenar = ExplainingScore::where("user_id", Auth::id())->sum("kebenaran");
         $explainKeruntutan = ExplainingScore::where("user_id", Auth::id())->sum("keruntutan");
         $final_score = $wondering + $exploring +  $explainKonteks + $explainBenar + $explainKeruntutan;
-        $exercise_logs = ExerciseCodeLog::where("user_id", Auth::id())->where("question_id", $question_id)->orderBy('id','DESC')->get();
+        $exercise_logs = ExerciseCodeLog::where("user_id", Auth::id())->where("question_id", $question_id)->orderBy('id', 'DESC')->get();
 
         $essay = EssayQuestion::where('question_id', $question_id)->pluck('id');
         $explain = UserAnswer::whereIn('essay_question_id', $essay)->where('user_id', $user_id)->get();
         $title = "code";
 
         return view("student_courses.detail_report", compact('exercise_logs', 'score', 'question', 'explain', 'title', 'final_score'));
-
     }
 
-    public function level($course_id){
+    public function level($course_id)
+    {
         $level = Level::where('course_id', $course_id)->get();
-        $l = Level::firstwhere('id',2);
+        $l = Level::firstwhere('id', 2);
         //isi level 1
         $level_down = $l->id - 1;
         $lessons1 = Lesson::where('level_id', $level_down)->pluck('id');
@@ -235,16 +236,17 @@ $fullbadge = BadgeSetting::all();
 
 
         $check = UserScore::where('user_id', Auth::user()->id)->where('level_id', $level_down)->orderBy('question_id', 'asc')->pluck('question_id')->toArray();
-        
+
         return view("student_courses.level", compact('level', 'course_id'));
     }
 
-    public function readScore(Request $request){
-        try{
+    public function readScore(Request $request)
+    {
+        try {
 
             $content_id = $request->input('content_id');
             $check = WonderingScore::where('user_id', Auth::id())->where('content_id', $content_id);
-            if($check->count() == 0){
+            if ($check->count() == 0) {
                 WonderingScore::create([
                     'user_id'   => Auth::id(),
                     'content_id'    => $content_id,
@@ -255,13 +257,12 @@ $fullbadge = BadgeSetting::all();
             return response()->json([
                 'status'    => '200',
                 'message'   => 'Success add score',
-            ],200);
-
-        } catch(Exception $err){
+            ], 200);
+        } catch (Exception $err) {
             return response()->json([
                 'status'    => '500',
                 'message'   => 'Error add score',
-            ],500);
+            ], 500);
         }
     }
 }

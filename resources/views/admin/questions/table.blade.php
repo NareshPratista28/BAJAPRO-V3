@@ -3,8 +3,8 @@
     <thead>
       <tr>
         <th>Content Id</th>
-        <th>Question</th>
         <th>Question Name</th>
+        <th>Question</th>
         <th>Score</th>
         <th colspan="3">Action</th>
       </tr>
