@@ -43,7 +43,7 @@
                 <button class="ql-image"></button>
                 <button class="ql-code-block"></button>
             </div>
-            <div id="prompt_editor">{!! @$question->prompt_llm !!}</div>
+            <div id="prompt_editor">{!! @$lesson->prompt_llm !!}</div>
         </div>
     </div>
 </div>
