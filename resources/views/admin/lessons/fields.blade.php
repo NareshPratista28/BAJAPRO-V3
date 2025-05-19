@@ -21,34 +21,6 @@
     {!! Form::label('description', 'Description:') !!} {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Example Questions Field (LLM Prompt) -->
-<div class="form-group col-sm-12">
-    {!! Form::label('prompt_llm', 'Question Example (Prompt LLM):') !!} {!! Form::hidden('prompt_llm', null, ['class' => 'form-control', 'id' => 'prompt_res']) !!}
-
-    <div class="d-flex align-items-start">
-        <div class="flex-grow-1">
-            <div id="prompt_toolbar">
-                <select class="ql-size">
-                    <option value="small"></option>
-                    <option selected></option>
-                    <option value="large"></option>
-                    <option value="huge"></option>
-                </select>
-                <button class="ql-bold"></button>
-                <button class="ql-italic"></button>
-                <button class="ql-list" value="ordered"></button>
-                <button class="ql-list" value="bullet"></button>
-                <button class="ql-script" value="sub"></button>
-                <button class="ql-script" value="super"></button>
-                <button class="ql-image"></button>
-                <button class="ql-code-block"></button>
-            </div>
-            <div id="prompt_editor">{!! @$lesson->prompt_llm !!}</div>
-        </div>
-    </div>
-</div>
-
-
 <!-- level Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('level_id', 'Level:') !!} {!! Form::select('level_id', $level, null, ['class' => 'form-control']) !!}
@@ -72,8 +44,6 @@
 
 @section('scripts')
     <script>
-        // (script yang sudah ada tetap dipertahankan)
-
         // Inisialisasi Quill untuk prompt LLM
         var promptQuill = new Quill("#prompt_editor", {
             modules: {
@@ -88,14 +58,5 @@
             document.getElementById("prompt_res").value =
                 promptQuill.root.innerHTML;
         });
-
-        // Event untuk Generate Prompt button jika diperlukan
-        $("#generatePromptButton").click(function(e) {
-            e.preventDefault();
-            // Logika untuk menghasilkan prompt
-            // Misalnya dengan API call atau logika lainnya
-        });
-
-        // (script lainnya tetap ada)
     </script>
 @endsection

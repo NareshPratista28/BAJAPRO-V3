@@ -2,13 +2,14 @@
 
 @section('content')
     <style>
+        /* Improved Styling */
         .ql-container.ql-snow {
             border: none;
         }
 
         .ql-editor {
             box-sizing: border-box;
-            line-height: 1.42;
+            line-height: 1.6;
             height: 100%;
             outline: none;
             overflow-y: auto;
@@ -21,338 +22,583 @@
         }
 
         .ql-snow .ql-editor pre.ql-syntax {
-            background-color: #f3f3f3;
-            color: #1f1f1f;
+            background-color: #f8f9fa;
+            color: #212529;
+            border-radius: 6px;
             overflow: visible;
+            padding: 15px;
         }
-
 
         .code-editor {
             padding: 20px;
-            background: #f3f3f3;
+            background: #f8f9fa;
             margin-top: 10px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .code-editor-wrapper {
             height: 300px;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
         }
 
-        .list-ac {
-            background: #c4c4c4;
-            color: #0c0c0c;
+        /* Content card styling */
+        .content-card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .content-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px 8px 0 0;
+        }
+
+        /* Course navigation styling */
+        .accordion-header {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .accordion-header:hover {
+            background-color: #e9ecef;
+        }
+
+        .accordion-header.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .list-group-item-action {
+            padding: 12px 15px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .list-group-item-action:hover {
+            background-color: #f1f8ff;
+            border-left: 3px solid #007bff;
+        }
+
+        .list-group-item-action.active {
+            background-color: #e8f4ff;
+            border-left: 3px solid #007bff;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        /* Badge display */
+        .badge-display {
+            display: flex;
+            align-items: center;
+        }
+
+        .badge-display img {
+            margin-left: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .badge-display img:hover {
+            transform: scale(1.2);
+        }
+
+        /* Progress bar */
+        .progress {
+            height: 10px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background-color: #28a745;
+        }
+
+        /* Exercise card */
+        .exercise-card {
+            border-left: 4px solid #ffc107;
+            background-color: #fffbf0;
+        }
+
+        /* Next level button */
+        .next-level-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #ff7675, #d63031);
+            color: white;
+            font-weight: bold;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .next-level-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(214, 48, 49, 0.2);
+        }
+
+        /* Lock/unlock icons */
+        .lock-icon,
+        .unlock-icon {
+            margin-left: 8px;
+        }
+
+        /* Scrollable content */
+        .scrollable-wrapper {
+            position: relative;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            margin-top: 15px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+            height: auto;
+        }
+
+        .content-description-scrollable {
+            min-height: 800px;
+            max-height: 1000px;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 7px;
+            scrollbar-width: thin;
+            scrollbar-color: #007bff #f0f0f0;
+        }
+
+        .content-description-scrollable::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content-description-scrollable::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+
+        .content-description-scrollable::-webkit-scrollbar-thumb {
+            background: #007bff;
+            border-radius: 10px;
+        }
+
+        /* Style for code blocks inside content */
+        .content-description-scrollable pre {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .content-description-scrollable code {
+            background-color: #f0f0f0;
+            color: #e74c3c;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #scrollable-element {
+            scrollbar-width: thin;
+            scrollbar-color: #007bff #f0f0f0;
+            max-height: 500px;
+            padding: 10px;
+        }
+
+        #scrollable-element::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #scrollable-element::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+
+        #scrollable-element::-webkit-scrollbar-thumb {
+            background: #007bff;
+            border-radius: 10px;
         }
     </style>
-    <section class="section mt-5" id="interactive">
-        <div class="row">
-            <div class="col-md-8">
-                <!-- {{ $content->url_video }} -->
-
-                <div>
-                    <div class="card" style="height: 450px">
-                        <iframe width="auto" height="450px" src='{{ $content->url_video }}' title="YouTube video player"
-                            frameborder="0"
-                            allow="accelerometer; autoplay;
-              clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen>
-                        </iframe>
+    <section class="section mt-4" id="interactive">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Video Player -->
+                    <div class="content-card">
+                        <div class="video-container">
+                            <iframe src='{{ $content->url_video }}' title="Video Player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
                     </div>
-                    @if ($content != null)
-                        <div class="card mt-5">
-                            <div class="card-body">
-                                <h2 class="section-title">{{ $content->title }}</h2>
-                                <div id="scrollable-element" style="overflow-y: scroll;">
-                                    <div class="section-lead">
-                                        <div>{!! $content->description !!}</div>
 
-                                        <br /><br />
+                    @if ($content != null)
+                        <!-- Content Description -->
+                        <div class="content-card">
+                            <div class="card-body">
+                                <h2 class="section-title mb-3">{{ $content->title }}</h2>
+                                <div class="mb-3">
+                                    <span class="badge badge-info p-2">
+                                        <i class="fas fa-book mr-1"></i> Lesson Material
+                                    </span>
+                                    <small class="text-muted ml-2">Scroll through the entire content to unlock the
+                                        exercise</small>
+                                </div>
+                                <div class="scrollable-wrapper">
+                                    <div id="scrollable-element" class="content-description-scrollable">
+                                        <div class="section-lead">
+                                            <div>{!! $content->description !!}</div>
+                                        </div>
+                                        <input type="hidden" name="content_id" value="{{ $content->id }}">
+
                                     </div>
-                                    <input type="hidden" name="content_id" value="{{ $content->id }}">
                                 </div>
                             </div>
                         </div>
-                        <!-- Your content goes here -->
 
+                        <!-- Questions Section -->
                         @if (sizeof($questions) != 0 && empty($score))
-                            <div class="card mt-5">
-                                {{ $score }}
+                            <div class="content-card mt-4">
                                 <div class="card-body">
-                                    <h6 class="card-title">Questions</h6>
-                                    <div class="navbar-divider"></div>
+                                    <h5 class="card-title d-flex align-items-center">
+                                        <i class="fas fa-question-circle text-primary mr-2"></i>
+                                        Assessment Questions
+                                    </h5>
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle"></i>
+                                        Complete these questions to progress in the course.
+                                    </div>
+                                    <div class="navbar-divider mb-3"></div>
                                     <div>
                                         @foreach ($questions as $index => $question)
                                             @if ($question->is_essay == '0')
-                                                <div>{{ $index + 1 }}.{!! $question->question !!}<br />
-                                                    <div class="ml-2">
-                                                        <small>Your answer</small>
-                                                        <br />
+                                                <div class="p-3 mb-3 bg-light rounded">
+                                                    <h6 class="font-weight-bold">{{ $index + 1 }}.
+                                                        {!! $question->question !!}</h6>
+                                                    <div class="ml-2 mt-3">
+                                                        <p class="text-muted mb-2">Select your answer:</p>
                                                         @foreach ($question->answers as $answer)
-                                                            <div>
-                                                                <input type="radio" name="answer_{{ $question->id }}"
-                                                                    value="{{ $answer->id }}"
+                                                            <div class="custom-control custom-radio my-2">
+                                                                <input type="radio" id="answer_{{ $answer->id }}"
+                                                                    name="answer_{{ $question->id }}"
+                                                                    class="custom-control-input" value="{{ $answer->id }}"
                                                                     v-on:change="changeAnswer({{ $index }},{{ $answer->id }})">
-                                                                {{ $answer->answer }}
+                                                                <label class="custom-control-label"
+                                                                    for="answer_{{ $answer->id }}">
+                                                                    {{ $answer->answer }}
+                                                                </label>
                                                             </div>
                                                         @endforeach
                                                     </div>
-                                                    <br />
-
-                                                </div><br />
+                                                </div>
                                             @endif
                                         @endforeach
 
-                                        {{-- <a href="api/questions/check_answer/" class="btn btn-primary" >
-                      Finish
-                    </a> --}}
-
-                                        <button class="btn btn-primary"
+                                        <button class="btn btn-primary btn-lg mt-3 px-4"
                                             v-on:click="checkAnswer({{ \Illuminate\Support\Facades\Auth::id() }}, {{ $content->id }})">
-                                            Finish
+                                            <i class="fas fa-check-circle mr-2"></i> Submit Answers
                                         </button>
                                     </div>
-
                                 </div>
                             </div>
                         @endif
 
-
+                        <!-- Code Exercise Section -->
                         @if (sizeof($code_tests) != 0)
                             @foreach ($code_tests as $index => $question)
-                                <div class="card">
+                                <div class="content-card mt-4 exercise-card">
                                     <div class="card-body">
-                                        <div>
-                                            <h3 class="card-title">Exercise</h3>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <i class="fas fa-code text-warning mr-2" style="font-size: 24px;"></i>
+                                            <h3 class="card-title mb-0">Coding Exercise</h3>
                                         </div>
-                                        <div>
+                                        <div class="mb-4">
                                             {!! $question->question !!}
-                                            {{-- @if (in_array($question->id, $finish_code_tests))
-                          <a href="{{ route('code_test', ['question_id' => $question->id, 'course_id' => $course->id, 'content_id' => $content->id, 'level_id' => $level->id]) }}"
-                            class="btn btn-primary">See Result</a>
-                        @else --}}
+                                        </div>
 
-
+                                        <div class="mt-4">
                                             @if ($check_read == 0 && $content->id > 1)
-                                                <a href="{{ route('code_test', ['question_id' => $question->id, 'course_id' => $course->id, 'content_id' => $content->id, 'level_id' => $level->id]) }}"
-                                                    id="button-test" class="btn btn-primary disabled">Let's Test</a>
+                                                <button id="button-test" class="btn btn-primary btn-lg disabled">
+                                                    <i class="fas fa-lock mr-2"></i> Complete the lesson to unlock
+                                                </button>
+                                                <small class="d-block text-muted mt-2">
+                                                    <i class="fas fa-info-circle"></i>
+                                                    Scroll through all the material to unlock this exercise
+                                                </small>
                                             @else
                                                 <a href="{{ route('code_test', ['question_id' => $question->id, 'course_id' => $course->id, 'content_id' => $content->id, 'level_id' => $level->id]) }}"
-                                                    id="button-test" class="btn btn-primary">Let's Test</a>
+                                                    id="button-test" class="btn btn-primary btn-lg">
+                                                    <i class="fas fa-code mr-2"></i> Start Coding Exercise
+                                                </a>
                                             @endif
-
-                                         
-
-                                            {{-- @endif --}}
-
-                                            {{-- <br><hr /> --}}
-                                            {{-- <b>write your answer</b> --}}
-                                            {{-- <button class="btn btn-primary" onclick="runCode('{{ 'sc'.$index }}')">Run</button> --}}
-                                            {{-- <div class="code-editor-wrapper"> --}}
-                                            {{-- <div id="sc{{$index}}" class="editor"></div> --}}
-                                            {{-- <br clear="all" /> --}}
-                                            {{-- </div> --}}
-
-                                            {{-- <br clear="all" /> --}}
-
-                                            {{-- <br /><br /> --}}
-                                            {{-- Output<br /> --}}
-                                            {{-- <pre class="code-editor" id="output_sc{{$index}}"></pre> --}}
                                         </div>
                                     </div>
-
                                 </div>
                             @endforeach
                         @endif
 
+                        <!-- Score Display -->
                         @if (!empty($score))
-                            <div class="alert alert-success">
-                                <h5>Your score is: {{ @$score->score }}</h5>
+                            <div class="alert alert-success mt-4 p-4">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-trophy mr-3" style="font-size: 2rem;"></i>
+                                    <div>
+                                        <h5 class="font-weight-bold mb-1">Congratulations!</h5>
+                                        <p class="mb-0">Your score is: <span
+                                                class="font-weight-bold">{{ @$score->score }}</span></p>
+                                    </div>
+                                </div>
                             </div>
                         @endif
                     @endif
                 </div>
 
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="fa fa-medal text-primary"></i> Total Score: {{ $final_score }}
-                        </h5>
-                        <div class="alert alert-info">
-                            Your Badge is <b>{{ $current_badge->name }}</b>
-                            <img src="/image_upload/{{ $current_badge->file }}" width="50px">
-                        </div><br />
+                <!-- Sidebar -->
+                <div class="col-md-4">
+                    <!-- Score Card -->
+                    <div class="content-card">
+                        <div class="card-body">
+                            <h5 class="card-title d-flex align-items-center mb-3">
+                                <i class="fa fa-medal text-primary mr-2"></i>
+                                Your Progress
+                            </h5>
 
-                        <div>
-                            <b>Your Code Test Progress ({{ $percentage }}%)</b>
-                            <div class="progress mt-2">
-                                <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%;"
-                                    aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">
-                                    {{ $percentage }}%</div>
+                            <div class="badge-display mb-4">
+                                <div>
+                                    <h6 class="font-weight-bold mb-1">Total Score</h6>
+                                    <h3 class="text-primary mb-0">{{ $final_score }}</h3>
+                                </div>
+                                <img src="/image_upload/{{ $current_badge->file }}" width="60px" class="ml-auto"
+                                    title="{{ $current_badge->name }}">
                             </div>
-                        </div>
 
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Lesson Content
-                        </h5>
-                        <div class="accordion" id="accordionExample">
-                            @foreach ($level->lessons as $index => $lesson)
-                                <div class="accordion-item">
-                                    <div class="accordion-header" data-toggle="collapse"
-                                        data-target="#item{{ $index }}"
-                                        aria-expanded="{{ $active_lesson->id == $lesson->id ? 'true' : 'false' }}"
-                                        aria-controls="collapseOne">
+                            <div class="alert alert-info d-flex align-items-center p-3 mb-4">
+                                <i class="fas fa-award mr-3" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <p class="mb-0">Your Badge is <b>{{ $current_badge->name }}</b></p>
+                                </div>
+                            </div>
 
-                                        {{ $lesson->title }}
-                                    </div>
-                                    <div id="item{{ $index }}"
-                                        class="accordion-collapse collapse {{ $active_lesson->id == $lesson->id ? 'show' : '' }}"
-                                        aria-labelledby="headingOne" data-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <div class="list-group row list-group-flush">
-                                                @foreach ($lesson->contents as $key => $content)
-                                                    @php
-
-                                                        if ($index == 0) {
-                                                            if ($key > 0) {
-                                                                $content_id = $lesson->contents[$key - 1]->id;
-                                                                $question = \App\Models\Question::where('content_id', $content_id)->pluck('id')->toArray();
-                                                                $check = \App\Models\UserScore::where('user_id', Auth::user()->id)
-                                                                    ->where('content_id', $content_id)
-                                                                    ->count();
-                                                                if ($check > 0) {
-                                                                    $is_open = 1;
-                                                                } else {
-                                                                    $is_open = 0;
-                                                                }
-                                                            } else {
-                                                                $is_open = 1;
-                                                            }
-                                                        } else {
-                                                            if ($key == 0) {
-                                                                $prev_lesson = $level->lessons[$index - 1]->id;
-                                                                $content_id = \App\Models\Content::where('lesson_id', $prev_lesson)->pluck('id')->last();
-                                                                $question = \App\Models\Question::where('content_id', $content_id)->pluck('id')->toArray();
-                                                                $check = \App\Models\UserScore::where('user_id', Auth::user()->id)
-                                                                    ->where('content_id', $content_id)
-                                                                    ->count();
-                                                                if ($check > 0) {
-                                                                    $is_open = 1;
-                                                                } else {
-                                                                    $is_open = 0;
-                                                                }
-                                                            } elseif ($key > 0) {
-                                                                $content_id = $lesson->contents[$key - 1]->id;
-                                                                $question = \App\Models\Question::where('content_id', $content_id)->pluck('id')->toArray();
-                                                                $check = \App\Models\UserScore::where('user_id', Auth::user()->id)
-                                                                    ->where('content_id', $content_id)
-                                                                    ->count();
-                                                                if ($check > 0) {
-                                                                    $is_open = 1;
-                                                                } else {
-                                                                    $is_open = 0;
-                                                                }
-                                                            }
-                                                        }
-                                                    @endphp
-
-                                                    @if ($is_open == 1)
-                                                        <a href="{{ route('student_course.my_course.detail.content', [$course->id, $level->id, $content->id]) }}"
-                                                            type="button"
-                                                            class="list-group-item list-group-item-action {{ $content->id == $active_content->id ? 'active' : '' }}">
-                                                            {{ $content->title }}
-
-                                                            <span class="float-right">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                    height="20" viewBox="0 0 24 24">
-                                                                    <path fill="currentColor"
-                                                                        d="M6 22q-.825 0-1.413-.588T4 20V10q0-.825.588-1.413T6 8h9V6q0-1.25-.875-2.125T12 3q-1.025 0-1.813.613T9.126 5.15q-.125.375-.388.613T8.126 6q-.5 0-.8-.338t-.2-.762Q7.5 3.225 8.85 2.112T12 1q2.075 0 3.538 1.463T17 6v2h1q.825 0 1.413.588T20 10v10q0 .825-.588 1.413T18 22H6Zm6-5q.825 0 1.413-.588T14 15q0-.825-.588-1.413T12 13q-.825 0-1.413.588T10 15q0 .825.588 1.413T12 17Z" />
-                                                                </svg>
-                                                            </span>
-                                                        </a>
-                                                    @else
-                                                        <a href="javascript:void(0)" type="button"
-                                                            class="list-group-item list-group-item-action {{ $content->id == $active_content->id ? 'active' : '' }}">
-                                                            {{ $content->title }}
-
-                                                            <span class="float-right">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                    height="20" viewBox="0 0 24 24">
-                                                                    <path fill="currentColor"
-                                                                        d="M6 22q-.825 0-1.413-.588T4 20V10q0-.825.588-1.413T6 8h1V6q0-2.075 1.463-3.538T12 1q2.075 0 3.538 1.463T17 6v2h1q.825 0 1.413.588T20 10v10q0 .825-.588 1.413T18 22H6Zm6-5q.825 0 1.413-.588T14 15q0-.825-.588-1.413T12 13q-.825 0-1.413.588T10 15q0 .825.588 1.413T12 17ZM9 8h6V6q0-1.25-.875-2.125T12 3q-1.25 0-2.125.875T9 6v2Z" />
-                                                                </svg>
-                                                            </span>
-                                                        </a>
-                                                    @endif
-                                                @endforeach
-                                            </div>
-
-                                        </div>
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <b>Code Test Progress</b>
+                                    <span class="badge badge-primary">{{ $percentage }}%</span>
+                                </div>
+                                <div class="progress mb-1">
+                                    <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%;"
+                                        aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">
                                     </div>
                                 </div>
-                            @endforeach
+                                <small
+                                    class="text-muted">{{ $percentage < 50 ? 'Keep going!' : ($percentage < 100 ? 'Almost there!' : 'Completed!') }}</small>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Button trigger modal -->
-                {{-- @if ($is_last == 1 && $check_explain == 0)
-        <div class="card d-flex flex-column">
-          <button type="button" style="height:50px" class="btn btn-danger mt-auto" data-toggle="modal" data-target="#modal-explain">
-            Next Level 
-            <span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m12 20l-1.425-1.4l5.6-5.6H4v-2h12.175l-5.6-5.6L12 4l8 8Z"/></svg>
-            </span>
-          </button>
-        </div> --}}
-                @if ($is_last == 1)
-                    <div class="card d-flex flex-column">
-                        <a type="button" style="height:50px" class="btn btn-danger mt-auto"
-                            href="{{ route('student_course.level', [$course->id]) }}">
-                            Next Level
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <path fill="currentColor"
-                                        d="m12 20l-1.425-1.4l5.6-5.6H4v-2h12.175l-5.6-5.6L12 4l8 8Z" />
-                                </svg>
-                            </span>
-                        </a>
+                    <!-- Course Content Navigation -->
+                    <div class="content-card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title d-flex align-items-center mb-3">
+                                <i class="fas fa-book-open mr-2"></i>
+                                Course Content
+                            </h5>
+
+                            <div class="accordion" id="accordionExample">
+                                @foreach ($level->lessons as $index => $lesson)
+                                    <div class="accordion-item mb-2">
+                                        <div class="accordion-header {{ $active_lesson->id == $lesson->id ? 'active' : '' }}"
+                                            data-toggle="collapse" data-target="#item{{ $index }}"
+                                            aria-expanded="{{ $active_lesson->id == $lesson->id ? 'true' : 'false' }}"
+                                            aria-controls="collapseOne">
+                                            <i
+                                                class="fas {{ $active_lesson->id == $lesson->id ? 'fa-folder-open' : 'fa-folder' }} mr-2"></i>
+                                            {{ $lesson->title }}
+                                        </div>
+                                        <div id="item{{ $index }}"
+                                            class="accordion-collapse collapse {{ $active_lesson->id == $lesson->id ? 'show' : '' }}"
+                                            aria-labelledby="headingOne" data-parent="#accordionExample">
+                                            <div class="accordion-body p-0">
+                                                <div class="list-group row list-group-flush">
+                                                    @foreach ($lesson->contents as $key => $content)
+                                                        @php
+
+                                                            if ($index == 0) {
+                                                                if ($key > 0) {
+                                                                    $content_id = $lesson->contents[$key - 1]->id;
+                                                                    $question = \App\Models\Question::where(
+                                                                        'content_id',
+                                                                        $content_id,
+                                                                    )
+                                                                        ->pluck('id')
+                                                                        ->toArray();
+                                                                    $check = \App\Models\UserScore::where(
+                                                                        'user_id',
+                                                                        Auth::user()->id,
+                                                                    )
+                                                                        ->where('content_id', $content_id)
+                                                                        ->count();
+                                                                    if ($check > 0) {
+                                                                        $is_open = 1;
+                                                                    } else {
+                                                                        $is_open = 0;
+                                                                    }
+                                                                } else {
+                                                                    $is_open = 1;
+                                                                }
+                                                            } else {
+                                                                if ($key == 0) {
+                                                                    $prev_lesson = $level->lessons[$index - 1]->id;
+                                                                    $content_id = \App\Models\Content::where(
+                                                                        'lesson_id',
+                                                                        $prev_lesson,
+                                                                    )
+                                                                        ->pluck('id')
+                                                                        ->last();
+                                                                    $question = \App\Models\Question::where(
+                                                                        'content_id',
+                                                                        $content_id,
+                                                                    )
+                                                                        ->pluck('id')
+                                                                        ->toArray();
+                                                                    $check = \App\Models\UserScore::where(
+                                                                        'user_id',
+                                                                        Auth::user()->id,
+                                                                    )
+                                                                        ->where('content_id', $content_id)
+                                                                        ->count();
+                                                                    if ($check > 0) {
+                                                                        $is_open = 1;
+                                                                    } else {
+                                                                        $is_open = 0;
+                                                                    }
+                                                                } elseif ($key > 0) {
+                                                                    $content_id = $lesson->contents[$key - 1]->id;
+                                                                    $question = \App\Models\Question::where(
+                                                                        'content_id',
+                                                                        $content_id,
+                                                                    )
+                                                                        ->pluck('id')
+                                                                        ->toArray();
+                                                                    $check = \App\Models\UserScore::where(
+                                                                        'user_id',
+                                                                        Auth::user()->id,
+                                                                    )
+                                                                        ->where('content_id', $content_id)
+                                                                        ->count();
+                                                                    if ($check > 0) {
+                                                                        $is_open = 1;
+                                                                    } else {
+                                                                        $is_open = 0;
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        @endphp
+
+                                                        @if ($is_open == 1)
+                                                            <a href="{{ route('student_course.my_course.detail.content', [$course->id, $level->id, $content->id]) }}"
+                                                                class="list-group-item list-group-item-action {{ $content->id == $active_content->id ? 'active' : '' }}">
+                                                                <i
+                                                                    class="fas {{ $content->id == $active_content->id ? 'fa-play-circle' : 'fa-circle' }} mr-2"></i>
+                                                                {{ $content->title }}
+
+                                                                <span class="float-right unlock-icon">
+                                                                    <i class="fas fa-unlock-alt text-success"></i>
+                                                                </span>
+                                                            </a>
+                                                        @else
+                                                            <a href="javascript:void(0)"
+                                                                class="list-group-item list-group-item-action disabled">
+                                                                <i class="fas fa-circle mr-2"></i>
+                                                                {{ $content->title }}
+
+                                                                <span class="float-right lock-icon">
+                                                                    <i class="fas fa-lock text-muted"></i>
+                                                                </span>
+                                                            </a>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
-                @endif
 
+                    <!-- Next Level Button -->
+                    @if ($is_last == 1)
+                        <div class="content-card mt-4">
+                            <a style="height:60px" class="btn next-level-btn btn-lg btn-block"
+                                href="{{ route('student_course.level', [$course->id]) }}">
+                                <span>Next Level</span>
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    @endif
+                </div>
             </div>
-
         </div>
     </section>
 
-    <!-- Modal -->
+    <!-- Explanation Modal -->
     <div class="modal fade" id="modal-explain" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header text-center">
-                    <h4 class="modal-title" id="exampleModalLongTitle">Explaining</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <div class="modal-header bg-primary text-white">
+                    <h4 class="modal-title" id="exampleModalLongTitle">
+                        <i class="fas fa-comment-dots mr-2"></i> Explain Your Understanding
+                    </h4>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <form id="create-explain" enctype="multipart/form-data">
                     <div class="modal-body">
-                        <p>Give your explanation after finish this level</p>
-                        <div class="form-group">
-                            <label>Explanation <span style="color:red">*</span></label>
-                            <textarea required class="form-control" name="explanation" style="height:36.5%"
-                                placeholder="Write your explanation"></textarea>
+                        <div class="alert alert-info">
+                            <i class="fas fa-lightbulb mr-2"></i>
+                            Share your understanding of this level's concepts to demonstrate your learning.
                         </div>
-                        <input type="hidden" value="{{ $course->id }}" id ="course_id" name="course_id"></input>
+
+                        <div class="form-group">
+                            <label>Your Explanation <span class="text-danger">*</span></label>
+                            <textarea required class="form-control" name="explanation" style="height:200px"
+                                placeholder="Explain the key concepts you learned in this level..."></textarea>
+                        </div>
+                        <input type="hidden" value="{{ $course->id }}" id="course_id" name="course_id">
                         <input type="hidden" value="{{ $level->id }}" id="level_id">
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="submit-explain" class="btn btn-secondary"
-                            data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                            data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane mr-2"></i> Submit Explanation
+                        </button>
                     </div>
                 </form>
             </div>
@@ -366,17 +612,56 @@
 
     <script>
         var scrollElement = document.getElementById('scrollable-element');
-        var dataHeight = scrollElement.scrollHeight;
+        var hasScrolledToBottom = false;
 
-        // Set tinggi elemen scrollable berdasarkan tinggi data
-        var manipulationHeight = dataHeight - 15;
-        scrollElement.style.height = manipulationHeight + "px";
+        // Use a more flexible approach for height
+        function adjustScrollableHeight() {
+            var windowHeight = window.innerHeight;
+            var elementOffset = scrollElement.getBoundingClientRect().top;
+            var availableHeight = windowHeight - elementOffset - 100; // 100px buffer from bottom of window
+
+            // Set a reasonable min and max height
+            var finalHeight = Math.min(Math.max(availableHeight, 200), 400);
+            scrollElement.style.maxHeight = finalHeight + "px";
+        }
+
+        // Call once on page load
+        adjustScrollableHeight();
+
+        // Also adjust on window resize
+        window.addEventListener('resize', adjustScrollableHeight);
 
         scrollElement.addEventListener('scroll', function() {
-            if (scrollElement.scrollTop + scrollElement.clientHeight != scrollElement.scrollHeight) {
-                // Panggil fungsi untuk melakukan tindakan saat scroll mencapai bagian bawah
+            // Check if scrolled to bottom (with a small buffer)
+            if (!hasScrolledToBottom &&
+                (scrollElement.scrollTop + scrollElement.clientHeight >= scrollElement.scrollHeight - 30)) {
+
+                hasScrolledToBottom = true;
                 scoreRead();
-                $('#button-test').removeClass('disabled');
+
+                // Provide visual feedback that content has been completely read
+                scrollElement.parentNode.classList.add('content-read');
+
+                // Enable the button if it exists
+                if (document.getElementById('button-test')) {
+                    document.getElementById('button-test').classList.remove('disabled');
+                    document.getElementById('button-test').innerHTML =
+                        '<i class="fas fa-code mr-2"></i> Start Coding Exercise';
+
+                    // Show a visual indicator that exercise is unlocked
+                    const notification = document.createElement('div');
+                    notification.className = 'content-unlocked-notification';
+                    notification.innerHTML = '<i class="fas fa-unlock-alt"></i> Exercise unlocked!';
+                    document.querySelector('.content-card').appendChild(notification);
+
+                    // Remove the notification after 5 seconds
+                    setTimeout(function() {
+                        notification.classList.add('fade-out');
+                        setTimeout(function() {
+                            notification.remove();
+                        }, 500);
+                    }, 5000);
+                }
             }
         });
 

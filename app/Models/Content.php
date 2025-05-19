@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -34,6 +34,7 @@ class Content extends Model
         'title',
         'lesson_id',
         'description',
+        'prompt_llm',
         'url_video',
         'published'
     ];
@@ -48,6 +49,7 @@ class Content extends Model
         'title' => 'string',
         'lesson_id' => 'integer',
         'description' => 'string',
+        'prompt_llm' => 'string',
         'url_video' => 'string',
         'published' => 'integer'
     ];
@@ -72,11 +74,13 @@ class Content extends Model
         return $this->hasMany(Question::class);
     }
 
-    public function wondering(){
+    public function wondering()
+    {
         return $this->hasMany(WonderingScore::class);
     }
 
-    public function explainingscore(){
+    public function explainingscore()
+    {
         return $this->hasMany(ExplainingScore::class);
     }
 }

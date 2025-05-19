@@ -16,12 +16,6 @@
     <p>{{ $lesson->description }}</p>
 </div>
 
-<!-- Prompt LLM Field -->
-<div class="form-group">
-    {!! Form::label('prompt_llm', 'Prompt LLM:') !!}
-    <p>{{!! $lesson->prompt_llm !!}}</p>
-</div>
-
 <!-- Course Id Field -->
 <div class="form-group">
     {!! Form::label('course_id', 'Course Id:') !!}

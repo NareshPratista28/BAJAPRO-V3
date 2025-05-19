@@ -1,30 +1,25 @@
-<style>
-    #logo {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #6777EF;
-    }
-</style>
-
 <nav class="navbar navbar-secondary navbar-expand-lg navbar-light" style="background: #ffffff; left:0">
     <div class="container">
         <ul class="navbar-nav">
             <li class="nav-item dropdown">
-                <a href="/" id="logo" class="nav-link has-dropdown">
-                    <img src="{{ asset('img/logo-kecil.png') }}" alt="logo" width="230">
+                <a href="/" id="logo" class="nav-link d-flex align-items-center">
+                    <img src="{{ asset('img/1.png') }}" alt="logo" width="180
+                    ">
                 </a>
             </li>
             {{-- <li class="nav-item">
         <a href="{{ route('home') }}" class="nav-link"><i class="fa fa-heart"></i> <span>Courses</span></a>
       </li> --}}
             <li class="nav-item mt-1">
-                <a href="{{ route('student_course.my_course') }}" class="nav-link "><i class="far fa-clone"></i>
-                    <span>My
+                <a href="{{ route('student_course.my_course') }}" class="nav-link d-flex align-items-center"><i
+                        class="far fa-clone"></i>
+                    <span class="ml-2">My
                         Course</span></a>
             </li>
 
             <li class="nav-item mt-1">
-                <a href="{{ route('student_course.report') }}" class="nav-link "><i class="far fa-clone"></i> <span>My
+                <a href="{{ route('student_course.report') }}" class="nav-link d-flex align-items-center "><i
+                        class="far fa-clone"></i> <span class="ml-2">My
                         Report</span></a>
             </li>
 
@@ -36,15 +31,15 @@
       </li> --}}
 
             <li class="nav-item mt-1">
-                <a href="{{ route('student_course.show.explain.code') }}" class="nav-link "><i class="far fa-file-code"
-                        style='font-size:18px'></i>
-                    <span>Explanation</span></a>
+                <a href="{{ route('student_course.show.explain.code') }}" class="nav-link d-flex align-items-center "><i
+                        class="far fa-file-code" style='font-size:18px'></i>
+                    <span class="ml-2">Explanation</span></a>
             </li>
 
             <li class="nav-item mt-1">
-                <a href="{{ route('student_course.leaderboard') }}" class="nav-link "><i class="fa fa-signal"
-                        style='font-size:18px'></i>
-                    <span>Leaderboard</span></a>
+                <a href="{{ route('student_course.leaderboard') }}" class="nav-link d-flex align-items-center "><i
+                        class="fa fa-signal" style='font-size:18px'></i>
+                    <span class="ml-2">Leaderboard</span></a>
             </li>
 
         </ul>
@@ -52,9 +47,9 @@
             <ul class="navbar-nav">
                 @auth
                     <li class="nav-item dropdown">
-                        <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
+                        <a href="#" data-toggle="dropdown" class="nav-link d-flex align-items-center has-dropdown">
                             <i class="far fa-user-circle"></i>
-                            <span>{{ \Illuminate\Support\Facades\Auth::user()->email }}</span>
+                            <span class="ml-2">{{ \Illuminate\Support\Facades\Auth::user()->email }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             @php

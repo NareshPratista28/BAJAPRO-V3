@@ -46,3 +46,8 @@
     <p>{!! $content->description !!} </p>
 </div>
 
+<!-- Prompt LLM Field -->
+<div class="form-group">
+    {!! Form::label('prompt_llm', 'Prompt LLM:') !!}
+    <p>{!! $content->prompt_llm !!}</p>
+</div>
