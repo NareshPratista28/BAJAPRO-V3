@@ -78,3 +78,9 @@
         <span>Reports</span>
     </a>
 </li>
+<li class="{{ Request::is('admin/history*') ? 'active' : '' }}">
+    <a href="{{ route('admin.history.index') }}">
+        <i class="fa fa-history"></i>
+        <span>LLM Generation Logs</span>
+    </a>
+</li>
