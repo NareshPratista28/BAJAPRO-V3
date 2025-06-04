@@ -81,4 +81,8 @@ class User extends Authenticatable implements JWTSubject
     public function explainingscore(){
         return $this->hasMany(ExplainingScore::class);
     }
+        public function syntaxConversionHistory()
+    {
+        return $this->hasMany(SyntaxConversionHistory::class);
+    }
 }

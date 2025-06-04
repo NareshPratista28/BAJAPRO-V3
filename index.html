@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAJAPRO - Java to Python Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .input-section, .output-section {
+            flex: 1;
+        }
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .level-selector {
+            margin-bottom: 15px;
+        }
+        .result-box {
+            border: 1px solid #eee;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .result-box h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .loading {
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+        .raw-response {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .raw-response h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        
+        details {
+            margin-top: 20px;
+        }
+        
+        summary {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .stopwatch {
+            text-align: center;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 16px;
+            background-color: #f5f5f5;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        
+        .timer-container {
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .timer-label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        .explanation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .explanation-table th {
+            background-color: #f0f0f0;
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        .explanation-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+        
+        .code-block {
+            background-color: #f5f5f5;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        /* New style for highlighted JSON keys */
+        .json-key {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>BAJAPRO - Java to Python Converter</h1>
+    
+    <div class="container">
+        <div class="input-section">
+            <h2>Input Java Code</h2>
+            <div class="level-selector">
+                <label for="level">Level: </label>
+                <select id="level">
+                    <option value="beginner">Beginner</option>
+                    <option value="expert">Expert</option>
+                </select>
+                
+                <div style="margin-top: 10px;">
+                    <label style="margin-right: 10px;">
+                        <input type="radio" name="apiEndpoint" value="convert" checked> Use Gemini (/convert)
+                    </label>
+                    <label>
+                        <input type="radio" name="apiEndpoint" value="convert_serve"> Use Ollama (/convert_serve)
+                    </label>
+                </div>
+            </div>
+            <textarea id="javaCode" placeholder="Enter your Java code here...">
+// Sample Java code
+public class HelloWorld {
+    public static void main(String[] args) {
+        int x = 10;
+        if (x > 5) {
+            System.out.println("x is greater than 5");
+        } else {
+            System.out.println("x is less than or equal to 5");
+        }
+    }
+}</textarea>
+            <button onclick="convertCode()">Convert to Python</button>
+            <div class="timer-container">
+                <span class="timer-label">Conversion Time:</span>
+                <span class="stopwatch" id="stopwatch">00:00:00.000</span>
+            </div>
+            
+            <!-- Add a section to display the raw API output -->
+            <div class="result-box" style="margin-top: 15px;">
+                <h3>Raw API Response</h3>
+                <details>
+                    <summary>Click to show/hide raw API response</summary>
+                    <pre id="rawApiResponse" style="max-height: 150px; overflow-y: auto; overflow-x: auto; font-size: 12px; background-color: #f8f8f8; padding: 10px; border-radius: 5px; max-width: 100%; word-wrap: break-word; white-space: pre-wrap;">No API response yet</pre>
+                </details>
+            </div>
+        </div>
+        
+        <div class="output-section">
+            <h2>Output</h2>
+            <div class="loading" id="loadingIndicator">
+                Converting... Please wait.
+            </div>
+            <div class="result-box">
+                <h3>Python Code</h3>
+                <pre id="pythonCode">Output will appear here...</pre>
+            </div>
+            <div class="result-box">
+                <h3>Explanation</h3>
+                <div id="explanation">Explanation will appear here...</div>
+            </div>
+            <div class="result-box" id="tipsBox">
+                <h3>Tips</h3>
+                <div id="tips">Tips will appear here for beginner level...</div>
+            </div>
+            
+            <details>
+                <summary>Raw Model Output (For Debugging)</summary>
+                <div class="raw-response">
+                    <pre id="rawResponse" style="white-space: pre-wrap; word-wrap: break-word;">No raw response yet</pre>
+                </div>
+            </details>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize variables for stopwatch
+        let startTime;
+        let stopwatchInterval;
+        
+        // Format time for stopwatch display
+        function formatTime(ms) {
+            let hours = Math.floor(ms / 3600000);
+            let minutes = Math.floor((ms % 3600000) / 60000);
+            let seconds = Math.floor((ms % 60000) / 1000);
+            let milliseconds = ms % 1000;
+            
+            return (
+                (hours < 10 ? '0' + hours : hours) + ':' +
+                (minutes < 10 ? '0' + minutes : minutes) + ':' +
+                (seconds < 10 ? '0' + seconds : seconds) + '.' +
+                (milliseconds < 10 ? '00' + milliseconds : milliseconds < 100 ? '0' + milliseconds : milliseconds)
+            );
+        }
+        
+        // Start stopwatch
+        function startStopwatch() {
+            startTime = Date.now();
+            stopwatchInterval = setInterval(function() {
+                let elapsedTime = Date.now() - startTime;
+                document.getElementById('stopwatch').textContent = formatTime(elapsedTime);
+            }, 10); // Update every 10ms for accuracy
+        }
+        
+        // Stop stopwatch
+        function stopStopwatch() {
+            clearInterval(stopwatchInterval);
+            let elapsedTime = Date.now() - startTime;
+            document.getElementById('stopwatch').textContent = formatTime(elapsedTime);
+        }
+        
+        // Reset stopwatch
+        function resetStopwatch() {
+            document.getElementById('stopwatch').textContent = '00:00:00.000';
+        }
+        
+        // Show or hide tips box based on selected level
+        document.getElementById('level').addEventListener('change', function() {
+            const tipsBox = document.getElementById('tipsBox');
+            tipsBox.style.display = this.value === 'beginner' ? 'block' : 'none';
+        });
+
+        // Function to parse the explanation and format it as a table
+        function formatExplanationAsTable(explanation) {
+            // Check if the explanation is already in the expected format with line items
+            if (!explanation.includes('a. Java =') && !explanation.includes('b. Java =')) {
+                return explanation; // Return as-is if not in the expected format
+            }
+            
+            let tableHtml = `
+                <table class="explanation-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Python</th>
+                            <th>Java</th>
+                            <th>Penjelasan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            // Use regex to find all items in the format: a. Java = `...` Python = `...` Penjelasan = ...
+            const itemPattern = /([a-z])\.\s+Java\s+=\s+`?(.*?)`?\s+Python\s+=\s+`?(.*?)`?\s+Penjelasan\s+=\s+(.*?)(?=(?:[a-z]\.\s+Java\s+=)|$)/gs;
+            
+            let match;
+            while ((match = itemPattern.exec(explanation)) !== null) {
+                const itemLabel = match[1]; // a, b, c, etc.
+                const javaCode = match[2].trim();
+                const pythonCode = match[3].trim();
+                const penjelasan = match[4].trim();
+                
+                tableHtml += `
+                    <tr>
+                        <td>${itemLabel}</td>
+                        <td><code class="code-block">${pythonCode}</code></td>
+                        <td><code class="code-block">${javaCode}</code></td>
+                        <td>${penjelasan}</td>
+                    </tr>
+                `;
+            }
+            
+            tableHtml += `
+                    </tbody>
+                </table>
+            `;
+            
+            // If no matches found, return the original text
+            if (!tableHtml.includes('<tr>')) {
+                return explanation;
+            }
+            
+            return tableHtml;
+        }
+        
+        async function convertCode() {
+            const javaCode = document.getElementById('javaCode').value;
+            const level = document.getElementById('level').value;
+            const endpoint = document.querySelector('input[name="apiEndpoint"]:checked').value;
+            
+            if (!javaCode.trim()) {
+                alert('Please enter Java code to convert.');
+                return;
+            }
+            
+            // Reset and start the stopwatch
+            resetStopwatch();
+            startStopwatch();
+            
+            // Show loading indicator
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('pythonCode').textContent = 'Converting...';
+            document.getElementById('explanation').innerHTML = 'Converting...';
+            document.getElementById('tips').textContent = level === 'beginner' ? 'Converting...' : 'Not available for expert level';
+            document.getElementById('rawResponse').textContent = 'Waiting for response...';
+            document.getElementById('rawApiResponse').textContent = `Sending request to /${endpoint}...`;
+            
+            try {
+                // Use the selected endpoint from radio buttons
+                const response = await fetch(`http://localhost:5000/${endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        java_code: javaCode,
+                        level_cs: level
+                    })
+                });
+                
+                // Stop the stopwatch when response is received
+                stopStopwatch();
+                
+                const data = await response.json();
+                
+                // Hide loading indicator
+                document.getElementById('loadingIndicator').style.display = 'none';
+                
+                // Display the raw API response with length limitation and highlighted keys
+                const apiResponseStr = JSON.stringify(data, null, 2);
+                // Limit to 2000 characters to prevent performance issues
+                const truncatedApiResponse = apiResponseStr.length > 2000 ? 
+                    apiResponseStr.substring(0, 2000) + "... (truncated for performance)" : 
+                    apiResponseStr;
+                
+                // Highlight JSON keys in red
+                const highlightedApiResponse = truncatedApiResponse.replace(/"([^"]+)":/g, '<span class="json-key">"$1":</span>');
+                document.getElementById('rawApiResponse').innerHTML = highlightedApiResponse;
+                
+                // Display the raw LLM response from the API
+                if (data.raw_response) {
+                    // Limit raw response display if it's very long
+                    const rawResponse = data.raw_response;
+                    const truncatedRawResponse = rawResponse.length > 3000 ? 
+                        rawResponse.substring(0, 3000) + "... (truncated for performance)" : 
+                        rawResponse;
+                    document.getElementById('rawResponse').textContent = truncatedRawResponse;
+                } else {
+                    document.getElementById('rawResponse').textContent = "Raw LLM response not available";
+                }
+                
+                // Update the output
+                document.getElementById('pythonCode').textContent = data.python_code || 'Error: Could not convert code';
+                
+                // Format explanation as table if possible
+                const formattedExplanation = formatExplanationAsTable(data.explanation || 'No explanation available');
+                document.getElementById('explanation').innerHTML = formattedExplanation;
+                
+                // Update tips if available
+                if (level === 'beginner') {
+                    document.getElementById('tips').textContent = data.tips || 'No tips available';
+                    document.getElementById('tipsBox').style.display = 'block';
+                } else {
+                    document.getElementById('tipsBox').style.display = 'none';
+                }
+                
+            } catch (error) {
+                // Stop the stopwatch on error
+                stopStopwatch();
+                
+                console.error('Error:', error);
+                document.getElementById('loadingIndicator').style.display = 'none';
+                document.getElementById('pythonCode').textContent = 'Error connecting to the API';
+                document.getElementById('explanation').textContent = 'Please check if the API server is running';
+                document.getElementById('tips').textContent = 'API connection error';
+                document.getElementById('rawResponse').textContent = 'API connection error: ' + error.message;
+                document.getElementById('rawApiResponse').textContent = 'API connection error: ' + error.message;
+            }
+        }
+        
+        // Initialize the tips box visibility
+        window.onload = function() {
+            const level = document.getElementById('level').value;
+            document.getElementById('tipsBox').style.display = level === 'beginner' ? 'block' : 'none';
+            resetStopwatch();
+        };
+    </script>
+</body>
+</html>
