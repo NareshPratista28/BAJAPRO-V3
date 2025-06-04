@@ -3,7 +3,12 @@
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+<<<<<<< HEAD
 use App\Http\Controllers\SyntaxConverterController;
+=======
+use App\Http\Controllers\HistoryController;
+
+>>>>>>> 187547032a83fe76e48b71d935a3f4538a6c5479
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,6 +46,11 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin', 'as' => 'a
     Route::get("/report/{user_id?}", [\App\Http\Controllers\Admin\DashboardController::class, "report"])->name("dashboard.report");
     Route::get("/penilaian/{user_id}/{content_id}", [\App\Http\Controllers\Admin\DashboardController::class, "penilaian"])->name("dashboard.penilaian");
     Route::post("/create/penilaian", [\App\Http\Controllers\Admin\DashboardController::class, "addPenilaian"])->name("dashboard.add.penilaian");
+
+    // History Routes
+    Route::get('/history', [App\Http\Controllers\HistoryController::class, 'index'])->name('history.index');
+    Route::get('/history/{id}', [App\Http\Controllers\HistoryController::class, 'show'])->name('history.show');
+    Route::get('/content/{contentId}/history', [App\Http\Controllers\HistoryController::class, 'contentHistory'])->name('content.history');
 });
 
 Route::group(['middleware' => ["auth"]], function () {
