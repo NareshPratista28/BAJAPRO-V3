@@ -1,0 +1,493 @@
+.explanation-text {
+    white-space: pre-line;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.CodeMirror {
+    border: 1px solid #ddd;
+    height: auto;
+    font-size: 14px;
+}
+
+.code-container {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.word-counter {
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    font-size: 12px;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.word-counter.exceeded {
+    color: #dc3545;
+    font-weight: bold;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+/* Clean slate for modal positioning */
+#explanationModal {
+    padding: 0 !important;
+}
+
+/* Reset the modal dialog styles to original values */
+#explanationModal .modal-dialog {
+    position: fixed !important;
+    top: 50px !important;
+    left: 50% !important;
+    width: 800px !important;
+    max-width: 800px !important; 
+    margin: 0 0 0 -400px !important; /* Keep left position the same */
+    transform: none !important;
+}
+
+/* Add scrolling to modal content */
+#explanationModal .modal-body {
+    max-height: 70vh !important; /* Limit height to 70% of viewport height */
+    overflow-y: auto !important; /* Enable vertical scrolling */
+}
+
+/* Override Bootstrap's default modal sizing for extra large */
+.modal-xl {
+    max-width: 800px !important;
+}
+
+/* For smaller screens */
+@media (max-width: 850px) {
+    #explanationModal .modal-dialog {
+        width: 90% !important;
+        left: 5% !important;
+        margin-left: 0 !important;
+    }
+}
+
+/* Styling for execution time display */
+#executionTimeDisplay {
+    font-size: 14px;
+    /* font-style: italic; */
+    color: #6c757d;
+    margin-top: 10px;
+    display: inline-block;
+    position: absolute;
+    left: calc(50% - 180px); /* Center under the convert button */
+}
+
+/* Ensure proper spacing between components */
+#feedbackSection {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+#feedbackSection:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Ensure proper button container positioning */
+.button-container {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+/* Styling for level selection modal buttons */
+#beginnerLevelBtn, #expertLevelBtn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#beginnerLevelBtn:after, #expertLevelBtn:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.2);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+#beginnerLevelBtn:hover:after, #expertLevelBtn:hover:after {
+    transform: translateX(0);
+}
+
+#beginnerLevelBtn:hover, #expertLevelBtn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Styling for tips section */
+#tipSection {
+    border-left: 4px solid #ffc107;
+    background-color: #fffdf0;
+    padding: 10px 15px;
+    margin: 15px 0;
+    font-size: 14px;
+}
+
+#tipSection .fas {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+/* Mode indicator styling */
+#currentModeIndicator {
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+#currentModeIndicator .fas {
+    margin-right: 8px;
+}
+
+/* Mode switch button styling */
+#modeSwitchBtn {
+    transition: all 0.2s ease;
+}
+
+#modeSwitchBtn:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+/* Modal Level Selection styling - updated for consistent positioning */
+#levelSelectionModal .modal-dialog {
+    position: fixed !important;
+    top: 50px !important;
+    left: 50% !important;
+    width: 700px !important;
+    max-width: 700px !important;
+    margin: 0 0 0 -350px !important; /* Center the modal */
+    transform: none !important;
+}
+
+#levelSelectionModal .modal-body {
+    max-height: 70vh !important; /* Limit height to 70% of viewport height */
+    overflow-y: auto !important; /* Enable vertical scrolling if needed */
+}
+
+/* For smaller screens - consistent with explanation modal */
+@media (max-width: 850px) {
+    #levelSelectionModal .modal-dialog {
+        width: 90% !important;
+        left: 5% !important;
+        margin-left: 0 !important;
+    }
+}
+
+/* Styling for expert mode explanation */
+.expert-explanation {
+    padding: 15px;
+    line-height: 1.6;
+}
+
+.expert-explanation h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.expert-explanation pre.code-block {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    font-family: "Courier New", monospace;
+    white-space: pre-wrap;
+}
+
+.expert-explanation p {
+    margin-bottom: 15px;
+}
+
+/* Improved styling for beginner explanation table */
+.beginner-explanation {
+    padding: 10px;
+}
+
+/* Improved styling for explanation table - matching index.html reference */
+.explanation-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+}
+
+.explanation-table th {
+    background-color: #f0f0f0;
+    padding: 8px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.explanation-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    vertical-align: top;
+    word-break: break-word;
+}
+
+/* Styling for code blocks within explanation table */
+.code-block {
+    background-color: #f5f5f5;
+    padding: 3px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-break: break-all;
+    display: inline-block;
+}
+
+/* Make the modal wider for better readability */
+#explanationModal .modal-dialog {
+    max-width: 90% !important;
+    margin: 30px auto !important;
+}
+
+/* Add consistent styling for table cells */
+.explanation-table td:first-child {
+    text-align: center;
+    width: 50px;
+    background-color: #f8f9fa;
+}
+
+.explanation-table tbody tr:hover {
+    background-color: rgba(0,0,0,0.03);
+}
+
+/* Ensure good vertical spacing in table cells */
+.explanation-table td, .explanation-table th {
+    line-height: 1.5;
+    
+}
+
+/* Fix for very long code lines */
+.explanation-table code {
+    max-width: 100%;
+    display: inline-block;
+}
+
+/* Modern Toggle Switch for Mode Switching */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    margin-bottom: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #007bff;
+    transition: .4s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    z-index: 2;
+}
+
+input:checked + .slider {
+    background-color: #28a745;
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+}
+
+#modeSwitchText {
+    font-size: 14px;
+    font-weight: 500;
+    color: #6c757d;
+    transition: color 0.3s ease;
+}
+
+/* Icons inside toggle */
+.beginner-icon, .expert-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 12px;
+    transition: opacity 0.3s ease;
+}
+
+.beginner-icon {
+    left: 8px;
+    opacity: 1;
+}
+
+.expert-icon {
+    right: 8px;
+    opacity: 0;
+}
+
+input:checked + .slider .beginner-icon {
+    opacity: 0;
+}
+
+input:checked + .slider .expert-icon {
+    opacity: 1;
+}
+
+/* Enhanced Toast Notification Styling */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.toast {
+    min-width: 350px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    border: none;
+    border-radius: 0.5rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+    display: none;
+    transform: translateX(0);
+    overflow: hidden;
+}
+
+.toast.show {
+    opacity: 1;
+    display: block;
+}
+
+.toast-header {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the left */
+}
+
+/* Hide close button by default */
+.toast-header .close {
+    display: none;
+}
+
+/* Hide toast time by default */
+#toastTime {
+    display: none;
+}
+
+#toastIcon {
+    font-size: 1.25rem;
+    margin-right: 0.5rem;
+}
+
+#toastIcon.success { color: #28a745; }
+#toastIcon.warning { color: #ffc107; }
+#toastIcon.danger { color: #dc3545; }
+#toastIcon.info { color: #17a2b8; }
+
+.toast-body {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+}
+
+/* Custom toast animations */
+@keyframes toast-in-right {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toast-out-right {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Styling for feedback input */
+#feedbackCommentInput {
+    resize: none;
+    border: 1px solid #ced4da;
+    transition: border-color 0.15s ease-in-out;
+    font-size: 14px;
+}
+
+#feedbackCommentInput:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Make feedback buttons more prominent */
+#feedbackYesBtn, #feedbackNoBtn {
+    font-size: 16px;
+    padding: 8px 20px;
+    transition: all 0.2s ease;
+}
+
+#feedbackYesBtn:hover, #feedbackNoBtn:hover {
+    transform: translateY(-2px);
+}

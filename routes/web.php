@@ -3,7 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\SyntaxConverterController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -72,6 +72,14 @@ Route::group(['middleware' => ["auth"]], function () {
     Route::get("/explain/code/edit/{id}", [\App\Http\Controllers\ExplainingController::class, "editCode"])->name('student_course.code.edit.explain');
     Route::put("/explain/update/{id}/{title}", [\App\Http\Controllers\ExplainingController::class, "update"])->name("student_course.update.explain");
     Route::get("/table/explain", [\App\Http\Controllers\ExplainingController::class, "tableExplain"])->name("table.explain");
+    // Syntax Converter Routes
+    Route::get('/syntax-converter', [SyntaxConverterController::class, 'index'])->name('syntax-converter.index');
+    Route::post('/syntax-converter/convert', [SyntaxConverterController::class, 'convert'])->name('syntax-converter.convert');
+    Route::get('/syntax-converter/history', [SyntaxConverterController::class, 'history'])->name('syntax-converter.history');
+    Route::get('/syntax-converter/guide', [SyntaxConverterController::class, 'featureGuide'])->name('syntax-converter.guide');
+    Route::get('/syntax-converter/{id}', [SyntaxConverterController::class, 'show'])->name('syntax-converter.show');
+    Route::delete('/syntax-converter/{id}', [SyntaxConverterController::class, 'delete'])->name('syntax-converter.delete');
+    Route::post('/syntax-converter/feedback', [SyntaxConverterController::class, 'feedback'])->name('syntax-converter.feedback');
 });
 
 Route::get('generator_builder', '\InfyOm\GeneratorBuilder\Controllers\GeneratorBuilderController@builder')->name('io_generator_builder');

@@ -41,6 +41,17 @@
                         class="fa fa-signal" style='font-size:18px'></i>
                     <span class="ml-2">Leaderboard</span></a>
             </li>
+<li class="nav-item dropdown mt-1">
+    <a href="#" class="nav-link d-flex align-items-center has-dropdown" data-toggle="dropdown">
+        <i class="fa fa-tools" style="font-size:18px;"></i>
+        <span class="ml-2">Tools</span>
+    </a>
+    <ul class="dropdown-menu">
+        <li>
+            <a href="{{ route('syntax-converter.index') }}" class="nav-link">Syntax Conversion</a>
+        </li>
+    </ul>
+</li>
 
         </ul>
         <div class="d-flex">
