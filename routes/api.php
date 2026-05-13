@@ -35,6 +35,9 @@ Route::resource('contents', App\Http\Controllers\API\ContentAPIController::class
 
 Route::resource('questions', App\Http\Controllers\API\QuestionAPIController::class);
 
+Route::get('questions/{id}/test-data', [App\Http\Controllers\API\QuestionAPIController::class, "getTestData"]);
+Route::get('questions/{id}/junit', [App\Http\Controllers\API\QuestionAPIController::class, "getJunitData"]);
+
 Route::get('questions/get_question_answers/{content_id}', [App\Http\Controllers\API\QuestionAPIController::class, "getQuestionAnswer"]);
 Route::post('questions/check_answer', [App\Http\Controllers\API\QuestionAPIController::class, "checkAnswer"]);
 

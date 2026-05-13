@@ -13,15 +13,15 @@
 <!-- Question Field -->
 <div class="form-group">
     {!! Form::label('question', 'Question:') !!}
-    <p>{{!! $question->question !!}}</p>
+    <p>{!! $question->question !!}</p>
 </div>
 
 <!-- Hint Field -->
 <div class="form-group">
     {!! Form::label('hint', 'Hint:') !!}
-    <p>{{ $question->hint}}</p>
+    <p>{{ $question->hint }}</p>
 </div>
-@foreach($essay as $essay)
+@foreach ($essay as $essay)
     <!-- Essay question Field -->
     <div class="form-group">
         {!! Form::label('essay_question', 'Essay Question:') !!}
@@ -34,20 +34,20 @@
         <p>{{ $essay->answer }}</p>
     </div>
 
-       <!-- Key answer Field -->
-       <div class="form-group">
+    <!-- Key answer Field -->
+    <div class="form-group">
         {!! Form::label('key_answer2', 'Key Answer 2:') !!}
         <p>{{ $essay->answer2 }}</p>
     </div>
 
-       <!-- Key answer Field -->
-       <div class="form-group">
+    <!-- Key answer Field -->
+    <div class="form-group">
         {!! Form::label('key_answer3', 'Key Answer 3:') !!}
         <p>{{ $essay->answer3 }}</p>
     </div>
 
-       <!-- Key answer Field -->
-       <div class="form-group">
+    <!-- Key answer Field -->
+    <div class="form-group">
         {!! Form::label('key_answer4', 'Key Answer 4:') !!}
         <p>{{ $essay->answer4 }}</p>
     </div>
@@ -75,13 +75,3 @@
     {!! Form::label('updated_at', 'Updated At:') !!}
     <p>{{ $question->updated_at }}</p>
 </div>
-{{--
-<div>
- <h4>Answers List</h4>
-        @foreach($question->answers as $index=>$answer)
-            <div class="mb-2">
-                <span class="{{ $answer->is_right == "true" ? "font-weight-bold":"" }}"> {{$index+1}}: {{ $answer->answer }}</span>
-            </div>
-        @endforeach
-</div>
---}}

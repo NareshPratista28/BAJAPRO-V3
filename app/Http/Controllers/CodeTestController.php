@@ -15,6 +15,7 @@ use App\Models\Explains;
 use App\Models\TotalScore;
 use App\Models\WonderingScore;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -82,7 +83,7 @@ class CodeTestController extends Controller
                             "user_id" => $request->get("user_id"),
                             "question_id" => $request->get("question_id"),
                             "content_id" => $request->get("content_id"),
-                            "score" => $request->get('score') == 10 ? $question->score : 0,
+                            "score" => $request->get('score') >= 100 ? $question->score : 0,
                             "started_at" => $request->get("started_at"),
                             "ended_at" => $request->get("ended_at"),
                             "on_timer" => $request->get("on_timer"),
@@ -94,7 +95,7 @@ class CodeTestController extends Controller
                     $check = UserScore::where("user_id", $request->get("user_id"))->where("question_id", $request->get("question_id"))->first();
                     $user_score = UserScore::firstwhere('id', $check->id);
                     // $user_score->score = $request->get('score');
-                    $user_score->score = $request->get('score') == 10 ? $question->score : 0;
+                    $user_score->score = $request->get('score') >= 100 ? $question->score : 0;
                     $user_score->save();
                 }
 
@@ -131,7 +132,7 @@ class CodeTestController extends Controller
 
                     // Memanggil API untuk mengoreksi jawaban esai
                     try {
-                        $response = Http::asForm()->post(env("GENERATE_GRADE_URL", "http://127.0.0.1:8000/compiler/generate/grade"), [
+                        $response = Http::asForm()->post(config('services.compiler.generate_grade'), [
                             'esay_answer' => $essayAnswer,
                             'esay_answer2' => $essayAnswer2,
                             'esay_answer3' => $essayAnswer3,
@@ -153,8 +154,14 @@ class CodeTestController extends Controller
                 $check_explain = ExplainingScore::where('content_id', $request->content_id)->where('question_id', $request->question_id)->where('user_id', $request->user_id);
                 $wondering = WonderingScore::where('content_id', $request->content_id)->where('user_id', $request->user_id)->first();
                 $user_score = UserScore::where('content_id', $request->content_id)->where('user_id', $request->user_id)->where('question_id', $request->question_id)->first();
-                //Menghitung Total Skor:
-                $tot_score = $wondering->score + $user_score->score + $nilai[0] + $nilai[1] + $nilai[2];
+                
+                // Handling Wondering Score null (jika user tidak membaca materi)
+                $wondering_point = $wondering ? $wondering->score : 0;
+                $wondering_id = $wondering ? $wondering->id : null;
+
+                // Menghitung Total Skor:
+                // Wondering(10) + Exploring(admin_point) + Explaining(max 60)
+                $tot_score = $wondering_point + $user_score->score + $nilai[0] + $nilai[1] + $nilai[2];
 
                 if ($check_explain->count() == 0) {
                     // Membuat entri total skor dan skor penjelasan
@@ -163,7 +170,7 @@ class CodeTestController extends Controller
                         'user_id'           => $request->user_id,
                         'question_id'       => $request->question_id,
                         'score'             => $tot_score,
-                        'wondering_score_id' => $wondering->id,
+                        'wondering_score_id' => $wondering_id,
                         'user_score_id'     => $user_score->id
                     ]);
 
@@ -189,7 +196,7 @@ class CodeTestController extends Controller
                         'is_accepted'       => false,
                         'essay_question_id' => $request->essay_id[1],
                         'user_answer_id'    => $runtutAnswer->id
-                        
+
                     ]);
 
                     $benarAnswer = UserAnswer::where('user_id', $request->user_id)->where('essay_question_id', $request->essay_id[2])->first();
@@ -203,7 +210,6 @@ class CodeTestController extends Controller
                         'essay_question_id' => $request->essay_id[2],
                         'user_answer_id'    => $benarAnswer->id
                     ]);
-
                 } else {
                     $check_total = $check_explain->first()->total->id;
 

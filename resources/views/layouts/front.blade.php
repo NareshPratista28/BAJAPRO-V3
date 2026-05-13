@@ -22,6 +22,13 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
     <script src="https://www.jdoodle.com/assets/jdoodle-pym.min.js" type="text/javascript"></script>
     <title>@yield('title') | {{ config('app.name') }}</title>
+    @if(!config('app.debug'))
+    <script>
+        console.log = function() {};
+        console.debug = function() {};
+        console.info = function() {};
+    </script>
+    @endif
 </head>
 
 <body>

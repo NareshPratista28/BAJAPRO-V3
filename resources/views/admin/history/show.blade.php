@@ -66,6 +66,7 @@
                                             $hasCode = isset($result['code']);
                                             $hasStudiKasus = isset($result['studi_kasus']);
                                             $hasTugas = isset($result['tugas']);
+                                            $hasJunitTest = isset($result['junit_test_code']);
                                         @endphp
 
                                         <div class="bg-white rounded p-4 mb-3 shadow-sm">
@@ -84,9 +85,16 @@
                                             @endif
 
                                             @if ($hasCode)
-                                                <div>
+                                                <div class="mb-3">
                                                     <h5 class="font-weight-bold">Code:</h5>
                                                     <div id="result-code-editor" class="code-editor-container"></div>
+                                                </div>
+                                            @endif
+
+                                            @if ($hasJunitTest)
+                                                <div class="mb-3">
+                                                    <h5 class="font-weight-bold">JUnit Test:</h5>
+                                                    <div id="junit-test-editor" class="code-editor-container"></div>
                                                 </div>
                                             @endif
                                         </div>
@@ -188,7 +196,27 @@
                 codeEditor.setText('');
                 codeEditor.insertText(0, code);
                 codeEditor.formatLine(0, code.length, 'code-block', 'java');
-            @else
+            @endif
+
+            @if (is_array($history['result'] ?? null) && isset($history['result']['junit_test_code']))
+                // Initialize JUnit Test editor
+                var junitTestEditor = new Quill('#junit-test-editor', {
+                    modules: {
+                        syntax: true,
+                        toolbar: false
+                    },
+                    theme: 'snow',
+                    readOnly: true
+                });
+
+                // Insert the JUnit test code and format it
+                var junitTestCode = @json($history['result']['junit_test_code']);
+                junitTestEditor.setText('');
+                junitTestEditor.insertText(0, junitTestCode);
+                junitTestEditor.formatLine(0, junitTestCode.length, 'code-block', 'java');
+            @endif
+
+            @if (!is_array($history['result'] ?? null))
                 // Initialize general result editor for non-structured results
                 var resultEditor = new Quill('#result-editor', {
                     modules: {

@@ -7,7 +7,7 @@ use App\Http\Requests\CreateBadgeSettingRequest;
 use App\Http\Requests\UpdateBadgeSettingRequest;
 use App\Repositories\BadgeSettingRepository;
 use App\Models\BadgeSetting;
-use Flash;
+use Laracasts\Flash\Flash;
 use Illuminate\Http\Request;
 use Response;
 use Illuminate\Support\Facades\File;
@@ -58,8 +58,6 @@ class BadgeSettingController extends AppBaseController
     {
         $input = $request->all();
 
-        $badgeSetting = $this->badgeSettingRepository->create($input);
-
         // $path = $badgeSetting->file('file')->store('image_upload', 'assets/images');
 
         if ($image = $request->file('file')) {
@@ -69,7 +67,7 @@ class BadgeSettingController extends AppBaseController
             $input['file'] = "$profileImage";
         }
 
-        BadgeSetting::create($input);
+        $badgeSetting = $this->badgeSettingRepository->create($input);
 
         // Product::create($request->all());
 

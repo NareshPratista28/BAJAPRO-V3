@@ -12,9 +12,9 @@ class StudentCourse extends Model
     protected $table = "student_courses";
     protected $fillable = ["user_id", "course_id"];
 
-    public function course(){
+    public function course()
+    {
         return $this->hasOne(Course::class);
     }
-
 
 }

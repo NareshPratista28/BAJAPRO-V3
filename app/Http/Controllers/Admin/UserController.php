@@ -32,7 +32,7 @@ class UserController extends Controller
         $roles = Role::get()->pluck('role', 'id');
         $code = "create";
 
-        return view('admin.users.create', compact('roles','code'));
+        return view('admin.users.create', compact('roles', 'code'));
     }
 
     /**
@@ -43,7 +43,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::create($request->only('name','email', 'role_id','class') + ['password' => bcrypt($request->password)]);
+        $user = User::create($request->only('name', 'email', 'role_id', 'class') + ['password' => bcrypt($request->password)]);
         return redirect()->route('admin.users.index');
     }
 
@@ -55,14 +55,14 @@ class UserController extends Controller
      */
     public function show($id)
     {
-      $user = User::find($id);
-      $roles = Role::all()->pluck("role", "id")->toArray();
-      // if (empty($lesson)) {
-      //     Flash::error('Lesson not found');
-      //
-      //     return redirect(route('admin.lessons.index'));
-      // }
-      return view('admin.users.show')->with('user', $user)->with("roles", $roles);
+        $user = User::find($id);
+        $roles = Role::all()->pluck("role", "id")->toArray();
+        // if (empty($lesson)) {
+        //     Flash::error('Lesson not found');
+        //
+        //     return redirect(route('admin.lessons.index'));
+        // }
+        return view('admin.users.show')->with('user', $user)->with("roles", $roles);
     }
 
     /**
@@ -92,9 +92,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,User $user)
+    public function update(Request $request, User $user)
     {
-        $user->update($request->only('name','email', 'role_id','class') + ['password' => bcrypt($request->password)]);
+        $user->update($request->only('name', 'email', 'role_id', 'class') + ['password' => bcrypt($request->password)]);
         return redirect()->route('admin.users.index');
     }
 
@@ -107,14 +107,14 @@ class UserController extends Controller
     public function destroy(Request $data, $id)
     {
 
-       User::find($id)->delete([
-          'name' => $data->name,
-          'email' => $data->email,
-          'password' => $data->password,
-          'role_id' => $data->role_id,
-          'class'   => $data->class,
-      ]);
-      return redirect()->route('admin.users.index')->with(['message'=> 'Successfully deleted!!']);
+        User::find($id)->delete([
+            'name' => $data->name,
+            'email' => $data->email,
+            'password' => $data->password,
+            'role_id' => $data->role_id,
+            'class'   => $data->class,
+        ]);
+        return redirect()->route('admin.users.index')->with(['message' => 'Successfully deleted!!']);
     }
 }
       // $post =User::where('id', $id)->first();

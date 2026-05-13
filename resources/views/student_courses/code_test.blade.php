@@ -484,42 +484,140 @@
         // Add custom styles to make the editor better
         document.head.insertAdjacentHTML("beforeend", `
         <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-    `);
-
-        // Run code function with UI enhancements
+    `); // Run code function with UI enhancements
         function runCode() {
             // Show running indicator
             $('#output-status').text('Running...').removeClass('success error').addClass('running');
             $('#output').text('Processing your code...');
 
-            let to_compile = {
-                "code": $(".codeflask__textarea").val(),
-                "user": '{{ \Illuminate\Support\Facades\Auth::user()->email }}',
+            // Get current code
+            let code = $(".codeflask__textarea").val();
+            let user_email = '{{ \Illuminate\Support\Facades\Auth::user()->email }}';
+            let question_id = '{{ $question->id }}';
+
+            // Prepare data for compilation with question ID
+            let requestData = {
+                "code": code,
+                "user": user_email,
+                "question_id": question_id
             };
 
+            // Run the code with question data from database
             $.ajax({
-                url: "{{ config('app.python_api') }}",
+                url: "{{ config('app.base_url') }}/dynamic_test_with_database_junit/",
                 type: "POST",
-                data: to_compile
-            }).done(function(data) {
-                // Update output with formatted result
-                $('#output').text(`${data.output.java}\n${data.output.test_output}`);
-                $('#score').val(data.output.point || 0);
+                contentType: "application/json",
+                data: JSON.stringify(requestData),
+                success: function(data) {
+                    console.log("Code execution response:", data);
 
-                // Update status badge
-                if (data.output.point === 0 || data.output.point === undefined) {
-                    $('#output-status').text('Failed').removeClass('running').addClass('error');
-                    $('#output').addClass('output-error').removeClass('output-success');
-                    send_exercise_code(data.output);
-                } else {
-                    $('#output-status').text('Success').removeClass('running').addClass('success');
-                    $('#output').addClass('output-success').removeClass('output-error');
-                    send_exercise_code(data.output);
+                    // Handle response from dynamic_test_with_database_junit endpoint
+                    if (data.success) {
+                        // New endpoint format
+                        let output_text = data.result.output || '';
+
+                        // Add test summary if available
+                        if (data.result.status === 'success' && data.result.passed) {
+                            output_text += `\n\n=== Test Summary ===\nAll JUnit tests passed successfully!`;
+                            let actualScore = data.result.point; // Use actual score from backend
+                            $('#score').val(actualScore);
+                            $('#output-status').text("All Tests Passed!").removeClass('running').addClass(
+                                'success');
+                            $('#output').addClass('output-success').removeClass('output-error');
+                        } else if (data.result.status === 'test_failed') {
+                            output_text += `\n\n=== Test Summary ===\nSome JUnit tests failed.`;
+                            output_text += `\nDetails: ${data.result.message || 'Check test output above'}`;
+                            let actualScore = data.result.point ||
+                                0; // Use actual score from backend (usually 0 for failed)
+                            $('#score').val(actualScore);
+                            $('#output-status').text("Tests Failed").removeClass('running').addClass('error');
+                            $('#output').addClass('output-error').removeClass('output-success');
+                        } else if (data.result.status === 'compile_error') {
+                            // Show detailed compilation error with help
+                            output_text = data.result.output || data.result.error || 'Compilation failed';
+                            $('#score').val(0);
+                            $('#output-status').text("Compilation Failed").removeClass('running').addClass(
+                                'error');
+                            $('#output').addClass('output-error').removeClass('output-success');
+                        } else {
+                            // Show detailed error message instead of generic message
+                            if (data.result.output) {
+                                output_text = data.result.output;
+                            } else {
+                                output_text = data.result.error || data.result.message ||
+                                    'Execution failed - please check your code';
+                            }
+                            $('#score').val(0);
+                            $('#output-status').text("Error").removeClass('running').addClass('error');
+                            $('#output').addClass('output-error').removeClass('output-success');
+                        }
+
+                        $('#output').text(output_text);
+
+                        // Send exercise log with new format - use actual score from backend
+                        send_exercise_code({
+                            java: data.result.output || '',
+                            test_output: '',
+                            point: data.result.point || 0 // Use actual score from backend
+                        });
+                    } else {
+                        // Handle error from new endpoint - show detailed error
+                        $('#output-status').text('Error').removeClass('running').addClass('error');
+
+                        let errorOutput = '';
+                        if (data.result && data.result.output) {
+                            errorOutput = data.result.output;
+                        } else if (data.result && data.result.error) {
+                            errorOutput = data.result.error;
+                        } else if (data.error) {
+                            errorOutput = data.error;
+                        } else {
+                            errorOutput = 'Execution failed - please check your code and try again';
+                        }
+
+                        $('#output').text(errorOutput).addClass('output-error').removeClass('output-success');
+                        $('#score').val(0);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error running code:", xhr.responseText);
+                    $('#output-status').text('Error').removeClass('running').addClass('error');
+
+                    let errorMessage = "❌ Failed to execute code\n\n";
+
+                    try {
+                        let errorData = JSON.parse(xhr.responseText);
+
+                        if (errorData.result && errorData.result.output) {
+                            // If there's detailed output in the error response, show it
+                            errorMessage = errorData.result.output;
+                        } else if (errorData.error) {
+                            errorMessage += `Error: ${errorData.error}`;
+                        } else if (errorData.message) {
+                            errorMessage += `Message: ${errorData.message}`;
+                        } else {
+                            errorMessage += `HTTP ${xhr.status}: ${error || 'Connection failed'}`;
+                        }
+
+                        // Add helpful suggestions based on error type
+                        if (xhr.status === 400) {
+                            errorMessage +=
+                                "\n\n💡 SUGGESTION: Check that your code is complete and properly formatted";
+                        } else if (xhr.status === 500) {
+                            errorMessage +=
+                                "\n\n💡 SUGGESTION: There may be a server issue. Try again in a moment";
+                        } else if (xhr.status === 0) {
+                            errorMessage += "\n\n💡 SUGGESTION: Check your internet connection and try again";
+                        }
+
+                    } catch (e) {
+                        errorMessage += `HTTP ${xhr.status}: ${error || 'Connection failed'}`;
+                        errorMessage += "\n\n💡 SUGGESTION: Please check your code and try again";
+                    }
+
+                    $('#output').text(errorMessage).addClass('output-error').removeClass('output-success');
+                    $('#score').val(0);
                 }
-            }).fail(function(data, err) {
-                $('#output-status').text('Error').removeClass('running').addClass('error');
-                $('#output').text("Error: Please check your code and try again.");
-                alert("Please write valid code before running!");
             });
         }
 

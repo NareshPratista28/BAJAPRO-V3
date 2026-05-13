@@ -20,6 +20,13 @@
     <link href="{{ asset('css/prism.css') }}" rel="stylesheet" type="text/css"/>
     <script src="https://www.jdoodle.com/assets/jdoodle-pym.min.js" type="text/javascript"></script>
   <title>Gamification</title>
+  @if(!config('app.debug'))
+  <script>
+      console.log = function() {};
+      console.debug = function() {};
+      console.info = function() {};
+  </script>
+  @endif
 </head>
 
 <body>

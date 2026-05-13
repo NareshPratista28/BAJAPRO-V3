@@ -223,7 +223,7 @@
                                     <div class="d-flex align-items-center">
                                         <div class="progress flex-grow-1 mr-2" style="height: 6px;">
                                             <div class="progress-bar bg-success"
-                                                style="width: {{ min(100, ($sc->score / 30) * 100) }}%;"></div>
+                                                style="width: {{ $q->score > 0 ? min(100, ($sc->score / $q->score) * 100) : 0 }}%;"></div>
                                         </div>
                                         <span>{{ $sc->score }}</span>
                                     </div>
@@ -232,7 +232,7 @@
                                     <div class="d-flex align-items-center">
                                         <div class="progress flex-grow-1 mr-2" style="height: 6px;">
                                             <div class="progress-bar bg-primary"
-                                                style="width: {{ min(100, ($explain / 10) * 100) }}%;"></div>
+                                                style="width: {{ min(100, ($explain / 60) * 100) }}%;"></div>
                                         </div>
                                         <span>{{ $explain }}</span>
                                     </div>

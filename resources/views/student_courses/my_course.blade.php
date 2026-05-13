@@ -712,7 +712,7 @@
             };
             $.ajax({
                 // url: "https://fransiska.pythonanywhere.com/compiler/run",
-                url: "{{ config('app.python_api') }}",
+                url: "{{ env('DJANGO_API_BASE') }}/index",
                 type: "POST",
                 data: to_compile
             }).done(function(data) {

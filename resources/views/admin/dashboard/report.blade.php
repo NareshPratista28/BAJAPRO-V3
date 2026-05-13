@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Report')
+
 @section('content')
     <div class="section">
         <div class="section-header">
@@ -87,7 +89,7 @@
                                         ->sum('score');
                                     $final = $wondering + $exploring;
                                 }
-                           
+
                             @endphp
 
                             <div class="card">

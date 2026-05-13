@@ -24,6 +24,7 @@ Auth::routes();
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+// ADMIN ROUTES
 Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     // Route::get("/", [App\Http\Controllers\Admin\DashboardController::class, "index"])->name("dashboard");
     Route::get("/", [App\Http\Controllers\Admin\DashboardController::class, "leaderboard"])->name("leaderboard");
@@ -32,6 +33,7 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin', 'as' => 'a
     Route::resource('lessons', App\Http\Controllers\Admin\LessonController::class);
     Route::resource('contents', App\Http\Controllers\Admin\ContentController::class);
     Route::resource('questions', App\Http\Controllers\Admin\QuestionController::class);
+    Route::post('questions/generate-with-junit', [App\Http\Controllers\Admin\QuestionController::class, 'generateQuestionWithJunit'])->name('questions.generate-with-junit');
     Route::resource('users', App\Http\Controllers\Admin\UserController::class);
     Route::resource('badgeSettings', \App\Http\Controllers\Admin\BadgeSettingController::class);
     Route::resource('level', App\Http\Controllers\Admin\LevelController::class);
@@ -43,10 +45,10 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin', 'as' => 'a
     Route::get("/penilaian/{user_id}/{content_id}", [\App\Http\Controllers\Admin\DashboardController::class, "penilaian"])->name("dashboard.penilaian");
     Route::post("/create/penilaian", [\App\Http\Controllers\Admin\DashboardController::class, "addPenilaian"])->name("dashboard.add.penilaian");
 
-    // History Routes
-    Route::get('/history', [App\Http\Controllers\HistoryController::class, 'index'])->name('history.index');
-    Route::get('/history/{id}', [App\Http\Controllers\HistoryController::class, 'show'])->name('history.show');
-    Route::get('/content/{contentId}/history', [App\Http\Controllers\HistoryController::class, 'contentHistory'])->name('content.history');
+    // History Routes - LLM Generation Logs
+    Route::get('/history', [App\Http\Controllers\Admin\HistoryController::class, 'index'])->name('history.index');
+    Route::get('/history/{id}', [App\Http\Controllers\Admin\HistoryController::class, 'show'])->name('history.show');
+    Route::get('/content/{contentId}/history', [App\Http\Controllers\Admin\HistoryController::class, 'contentHistory'])->name('content.history');
 });
 
 Route::group(['middleware' => ["auth"]], function () {

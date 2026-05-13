@@ -38,6 +38,7 @@
                                                 <th>Content</th>
                                                 <th>Topic</th>
                                                 <th>Generation Time</th>
+                                                <th>JUnit Test</th>
                                                 <th>Created At</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -58,6 +59,17 @@
                                                     </td>
                                                     <td>{{ $history['topic_title'] ?? 'N/A' }}</td>
                                                     <td>{{ number_format($history['generation_time'] ?? 0, 2) }}s</td>
+                                                    <td>
+                                                        @if (isset($history['has_junit_test']) && $history['has_junit_test'])
+                                                            <span class="badge badge-success">
+                                                                <i class="fa fa-check"></i> Available
+                                                            </span>
+                                                        @else
+                                                            <span class="badge badge-secondary">
+                                                                <i class="fa fa-times"></i> N/A
+                                                            </span>
+                                                        @endif
+                                                    </td>
                                                     <td>{{ date('Y-m-d H:i:s', strtotime($history['created_at'] ?? 'now')) }}
                                                     </td>
                                                     <td>

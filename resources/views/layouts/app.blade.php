@@ -28,6 +28,13 @@
     <link rel="stylesheet" href="{{ asset('web/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('web/css/components.css') }}" />
     @yield('page_css') @yield('css')
+    @if(!config('app.debug'))
+    <script>
+        console.log = function() {};
+        console.debug = function() {};
+        console.info = function() {};
+    </script>
+    @endif
 </head>
 
 <body>

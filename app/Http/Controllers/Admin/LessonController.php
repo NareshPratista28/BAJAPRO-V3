@@ -45,7 +45,7 @@ class LessonController extends AppBaseController
      */
     public function create()
     {
-        $courses = Course::all()->pluck("course_name", "id")->toArray();
+        $courses = Course::get()->pluck("course_name", "id")->toArray();
         $level = Level::all()->pluck("name","id")->toArray();
         Log::debug($courses);
         return view('admin.lessons.create', ["courses" => $courses, "level" => $level]);

@@ -54,12 +54,13 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
-
-    'asset_url' => env('ASSET_URL'),
-
-    'python_api' => env('BASE_URL', 'http://127.0.0.1:8000/compiler/run'),
-    'generate_grade_api' => env('GENERATE_GRADE', 'http://127.0.0.1:8000/compiler/generate/grade'),
+    'base_url' => env('DJANGO_API_BASE', 'http://127.0.0.1:8000/api'),
+    'django_url' => env('DJANGO_URL', 'http://127.0.0.1:8000'),
+    'compiler_api_url' => env('COMPILER_API_URL', 'http://127.0.0.1:8000/api'),
+    'llm_generate_question' => env('LLM_GENERATE_QUESTION', 'http://127.0.0.1:8000/api/generate-question-with-junit'),
+    'llm_save_junit_file' => env('LLM_SAVE_JUNIT_FILE', 'http://127.0.0.1:8000/api/save-junit-test-file'),
+    'llm_finalize_files' => env('LLM_FINALIZE_FILES', 'http://127.0.0.1:8000/api/finalize-question-files'),
+    'llm_history_api' => env('LLM_HISTORY_API', 'http://127.0.0.1:8000/api/history'),
 
     /*
     |--------------------------------------------------------------------------

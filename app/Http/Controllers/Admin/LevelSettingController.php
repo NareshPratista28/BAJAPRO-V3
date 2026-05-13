@@ -6,7 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\CreateBadgeSettingRequest;
 use App\Http\Requests\UpdateBadgeSettingRequest;
 use App\Repositories\BadgeSettingRepository;
-use Flash;
+use Laracasts\Flash\Flash;
 use Illuminate\Http\Request;
 use Response;
 

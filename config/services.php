@@ -24,11 +24,20 @@ return [
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
-
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    ],
+
+    'llm_api' => [
+        'url' => env('LLM_API_URL', 'http://localhost:8001/api/v1'),
+        'timeout' => env('LLM_API_TIMEOUT', 0), // No timeout - changed from 30
+        'retry_attempts' => env('LLM_API_RETRY_ATTEMPTS', 0), // No retries - changed from 3
+    ],
+
+    'compiler' => [
+        'generate_grade' => env('GENERATE_GRADE', 'http://127.0.0.1:8000/compiler/generate/grade'),
     ],
 
 ];

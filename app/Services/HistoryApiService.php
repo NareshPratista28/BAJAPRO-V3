@@ -11,7 +11,7 @@ class HistoryApiService
 
     public function __construct()
     {
-        $this->baseUrl = config('services.llm_api.url', 'http://localhost:8001/api/v1');
+        $this->baseUrl = config('app.llm_history_api');
     }
 
     /**

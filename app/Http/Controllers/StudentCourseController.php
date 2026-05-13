@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use stdClass;
+use Exception;
 
 class StudentCourseController extends Controller
 {
@@ -100,7 +101,7 @@ class StudentCourseController extends Controller
 
     public function my_course($course_id, $level_id, $content_id = null)
     {
-        if ($content_id == 1) {
+        if ($content_id != null) {
             $check = WonderingScore::where('user_id', Auth::id())->where('content_id', $content_id);
             if ($check->count() == 0) {
                 WonderingScore::create([

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -27,8 +27,6 @@ class Question extends Model
 
     protected $dates = ['deleted_at'];
 
-
-
     public $fillable = [
         'content_id',
         'question',
@@ -37,22 +35,33 @@ class Question extends Model
         'score',
         'is_essay',
         'timer',
-        'hint'
+        'hint',
+        'test_cases_data',
+        'solution_template',
+        'junit_tests',
+        'class_name',
+        'test_description'
     ];
 
     /**
      * The attributes that should be casted to native types.
      *
      * @var array
-     */
-    protected $casts = [
+     */    protected $casts = [
         'id' => 'integer',
         'content_id' => 'integer',
         'question' => 'string',
+        'test_cases_data' => 'string',
+        'solution_template' => 'string',
+        'junit_tests' => 'string',
         'question_name' => 'string',
         'image' => 'string',
         'score' => 'integer',
-        'is_essay' => 'integer'
+        'is_essay' => 'integer',
+        'timer' => 'integer',
+        'hint' => 'string',
+        'class_name' => 'string',
+        'test_description' => 'string'
     ];
 
     /**
@@ -75,14 +84,17 @@ class Question extends Model
         return $this->hasMany(\App\Models\Answer::class);
     }
 
-    public function explains(){
+    public function explains()
+    {
         return $this->hasMany(Explains::class);
     }
 
-    public function essay(){
+    public function essay()
+    {
         return $this->hasMany(EssayQuestion::class);
     }
-    public function total(){
+    public function total()
+    {
         return $this->hasMany(TotalScore::class);
     }
 }

@@ -54,7 +54,7 @@ class LoginController extends Controller
             return redirect('/admin');
         }
 
-        // For regular users, redirect to home
+        // For all other users (students, etc), redirect to home
         return redirect('/');
     }
 
